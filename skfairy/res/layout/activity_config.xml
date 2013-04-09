@@ -1,0 +1,141 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:background="@color/background.gray" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background.gray"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <TextView
+            android:id="@+id/setting_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/lblSetting"
+            android:textIsSelectable="false" />
+
+        <View
+            android:id="@+id/View1"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/setting_text"
+            android:background="@color/background.separator" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/View1"
+            android:text="@string/lblDelayTime" />
+
+        <TextView
+            android:id="@+id/txtDelay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/textView1"
+            android:textIsSelectable="false" />
+
+        <SeekBar
+            android:id="@+id/skbDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:max="800" />
+
+        <TextView
+            android:id="@+id/lblNoiseThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/skbDelay"
+            android:text="@string/lblNoiseThreshold" />
+
+        <TextView
+            android:id="@+id/txtNoiseThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/lblNoiseThreshold"
+            android:layout_alignBottom="@+id/lblNoiseThreshold"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/lblNoiseThreshold"
+            android:textIsSelectable="false" />
+
+        <SeekBar
+            android:id="@+id/skbNoiseThreshold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lblNoiseThreshold"
+            android:max="80" />
+
+        <TextView
+            android:id="@+id/service_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/skbNoiseThreshold"
+            android:layout_marginTop="14dp"
+            android:text="@string/lblService"
+            android:textIsSelectable="false" />
+
+        <View
+            android:id="@+id/ServiceSeparator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/service_text"
+            android:background="@color/background.separator" />
+
+        <Button
+            android:id="@+id/btnStartService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ServiceSeparator"
+            android:text="@string/btnStartService" />
+
+        <Button
+            android:id="@+id/btnStopService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ServiceSeparator"
+            android:layout_marginLeft="120dp"
+            android:layout_toRightOf="@+id/btnStartService"
+            android:text="@string/btnStopService" />
+
+        <Switch
+            android:id="@+id/swcDebug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnStartService"
+            android:layout_marginTop="14dp"
+            android:text="@string/lblDebug" />
+
+        <View
+            android:id="@+id/DebugSeparator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignLeft="@+id/swcDebug"
+            android:layout_below="@+id/swcDebug"
+            android:background="@color/background.separator" />
+
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/DebugSeparator"
+            android:layout_below="@+id/DebugSeparator"
+            android:textIsSelectable="false"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</ScrollView>
