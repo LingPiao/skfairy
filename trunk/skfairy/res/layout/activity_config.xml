@@ -110,6 +110,7 @@
             android:layout_below="@+id/ServiceSeparator"
             android:layout_marginLeft="120dp"
             android:layout_toRightOf="@+id/btnStartService"
+            android:enabled="false"
             android:text="@string/btnStopService" />
 
         <Switch

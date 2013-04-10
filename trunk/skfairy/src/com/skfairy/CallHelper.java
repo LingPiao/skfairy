@@ -36,13 +36,6 @@ public class CallHelper {
 	}
 
 	public static void answerCall(Context context) {
-		// Let the phone ring for a set delay
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// We don't really care
-		}
-
 		// Make sure the phone is still ringing
 		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		if (tm.getCallState() != TelephonyManager.CALL_STATE_RINGING) {
