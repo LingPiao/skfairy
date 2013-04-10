@@ -1,45 +1,20 @@
 package com.skfairy;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Switch;
 import android.widget.TextView;
 
 public class Config extends Activity {
 	private Intent sks;
-	// private ShakeDetector mShakeDetector;
-
-	// private boolean debugEnabled = false;
-	private TextView info;
-	private boolean debugEnabled = false;
-
-	private BroadcastReceiver mybcr = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (Constants.SHAKE_ACTION.equalsIgnoreCase(action)) {
-				if (debugEnabled) {
-					SkLog.d("Got an action broadcast");
-					Bundle extras = intent.getExtras();
-					if (extras != null) {
-						String value = extras.getString(Constants.SHAKE_EXTRA_VALUE);
-						info.append(value);
-					}
-				}
-			}
-		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +22,9 @@ public class Config extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_config);
 		// Toast.makeText(Config.this, "Showing...", Toast.LENGTH_SHORT).show();
-		info = (TextView) findViewById(R.id.info_text);
 
 		setDelay();
 		setNoiseThreshold();
-		setDebug();
 
 		sks = new Intent(this, SkService.class);
 
@@ -60,7 +33,6 @@ public class Config extends Activity {
 
 		OnClickListener ssLisn = new OnClickListener() {
 			public void onClick(View v) {
-				// info.setText("Start Service");
 				SkLog.d("Start SkService...");
 				startService(sks);
 				SkLog.d("SkService started");
@@ -83,8 +55,6 @@ public class Config extends Activity {
 		};
 
 		btnStopService.setOnClickListener(stsLisn);
-		registerReceiver(mybcr, new IntentFilter(Constants.SHAKE_ACTION));
-
 	}
 
 	private void setDelay() {
@@ -147,41 +117,44 @@ public class Config extends Activity {
 		seekbar.setOnSeekBarChangeListener(sbCl);
 	}
 
-	private void setDebug() {
-		Switch debugSwc = (Switch) findViewById(R.id.swcDebug);
-		debugSwc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				info.setText("");
-				if (isChecked) {
-					debugEnabled = true;
-					info.setVisibility(View.VISIBLE);
-				} else {
-					debugEnabled = false;
-					info.setVisibility(View.GONE);
-				}
-			}
-		});
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.config, menu);
+		getMenuInflater().inflate(R.menu.about, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		SkLog.d("Config onOptionsItemSelected,id=" + item.getItemId());
+		int id = item.getItemId();
+		if (id == R.id.action_about) {
+			new AlertDialog.Builder(Config.this).setTitle(getAboutTitle()).setMessage(getAboutInfo())
+					.setPositiveButton(this.getString(R.string.about_btnOk), null).show();
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+
+		return true;
+	}
+
+	private String getAboutTitle() {
+		return this.getString(R.string.about_title) + " " + this.getString(R.string.app_name);
+	}
+
+	private String getAboutInfo() {
+		return this.getString(R.string.about_version) + "\n" + this.getString(R.string.about_auth);
 	}
 
 	@Override
 	protected void onResume() {
 		SkLog.d("Config onResume calling...");
-		registerReceiver(mybcr, new IntentFilter(Constants.SHAKE_ACTION));
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
 		SkLog.d("Config onPause calling...");
-		unregisterReceiver(mybcr);
 		super.onPause();
 	}
 
