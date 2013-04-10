@@ -10,5 +10,11 @@
     <string name="lblSetting">Setting</string>
     <string name="lblService">Service</string>
     <string name="lblDebug">Debug Enabled:</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="about.title">About</string>
+    <string name="about.version">\nVersion: V1.0</string>
+    <string name="about.auth">\nAuthor:\nlingpiao.kong@gmail.com\n</string>
+    <string name="about.btnOk">OK</string>
 
 </resources>

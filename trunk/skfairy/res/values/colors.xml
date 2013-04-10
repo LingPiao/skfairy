@@ -2,7 +2,6 @@
 <resources>
 
     <color name="background.gray">#e0e0e0</color>
-    <color name="background.black">#000000</color>
-    <color name="background.separator">#909090</color>
+    <color name="background.black">#222222</color>
 
 </resources>

@@ -6,7 +6,8 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true"
     android:layout_alignParentTop="true"
-    android:background="@color/background.gray" >
+    android:background="@color/background.gray"
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -14,11 +15,11 @@
         android:background="@color/background.gray"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:paddingRight="@dimen/activity_horizontal_margin" >
 
         <TextView
             android:id="@+id/setting_text"
+            style="@style/AppThemeTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -27,10 +28,9 @@
 
         <View
             android:id="@+id/View1"
+            style="@style/AppThemeSeparator"
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:layout_below="@+id/setting_text"
-            android:background="@color/background.separator" />
+            android:layout_below="@+id/setting_text" />
 
         <TextView
             android:id="@+id/textView1"
@@ -82,6 +82,7 @@
 
         <TextView
             android:id="@+id/service_text"
+            style="@style/AppThemeTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/skbNoiseThreshold"
@@ -91,16 +92,16 @@
 
         <View
             android:id="@+id/ServiceSeparator"
+            style="@style/AppThemeSeparator"
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:layout_below="@+id/service_text"
-            android:background="@color/background.separator" />
+            android:layout_below="@+id/service_text" />
 
         <Button
             android:id="@+id/btnStartService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ServiceSeparator"
+            android:layout_marginLeft="6dp"
             android:text="@string/btnStartService" />
 
         <Button
@@ -120,23 +121,6 @@
             android:layout_below="@+id/btnStartService"
             android:layout_marginTop="14dp"
             android:text="@string/lblDebug" />
-
-        <View
-            android:id="@+id/DebugSeparator"
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:layout_alignLeft="@+id/swcDebug"
-            android:layout_below="@+id/swcDebug"
-            android:background="@color/background.separator" />
-
-        <TextView
-            android:id="@+id/info_text"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/DebugSeparator"
-            android:layout_below="@+id/DebugSeparator"
-            android:textIsSelectable="false"
-            android:visibility="gone" />
     </RelativeLayout>
 
 </ScrollView>
