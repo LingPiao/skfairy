@@ -1,7 +1,6 @@
 package com.skfairy;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 public class Config extends Activity {
 	private Intent sks;
+	private TextView speedNote;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,9 @@ public class Config extends Activity {
 		setContentView(R.layout.activity_config);
 		// Toast.makeText(Config.this, "Showing...", Toast.LENGTH_SHORT).show();
 
-		setDelay();
-		setNoiseThreshold();
+		speedNote = (TextView) findViewById(R.id.lblSpeedThresholdNote);
+
+		setSpeedThreshold();
 
 		sks = new Intent(this, SkService.class);
 
@@ -57,63 +58,39 @@ public class Config extends Activity {
 		btnStopService.setOnClickListener(stsLisn);
 	}
 
-	private void setDelay() {
-		SeekBar seekbar = (SeekBar) findViewById(R.id.skbDelay);
-		seekbar.setProgress((int) ShakeDetector.getDelay());
-
-		final TextView txtDelay = (TextView) findViewById(R.id.txtDelay);
-		txtDelay.setText(String.valueOf(ShakeDetector.getDelay()));
-
-		OnSeekBarChangeListener sbCl = new OnSeekBarChangeListener() {
-			@Override
-			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-				ShakeDetector.setDelay((long) arg1);
-				txtDelay.setText(String.valueOf(arg1));
-				// Toast.makeText(Config.this, "Value=" + arg1,
-				// Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-			}
-
-		};
-
-		seekbar.setOnSeekBarChangeListener(sbCl);
+	private void setSpeedThresholdNote(int threshold) {
+		if (threshold > 50) {
+			speedNote.setText(this.getString(R.string.lblSpeedThresholdNote_l3));
+		} else if (threshold > 10) {
+			speedNote.setText(this.getString(R.string.lblSpeedThresholdNote_l2));
+		} else {
+			speedNote.setText(this.getString(R.string.lblSpeedThresholdNote_l1));
+		}
 	}
 
-	private void setNoiseThreshold() {
-		SeekBar seekbar = (SeekBar) findViewById(R.id.skbNoiseThreshold);
+	private void setSpeedThreshold() {
+		SeekBar seekbar = (SeekBar) findViewById(R.id.skbSpeedThreshold);
 		seekbar.setProgress(ShakeDetector.getShakeThreshold());
-
-		final TextView txtNT = (TextView) findViewById(R.id.txtNoiseThreshold);
+		setSpeedThresholdNote(ShakeDetector.getShakeThreshold());
+		final TextView txtNT = (TextView) findViewById(R.id.txtSpeedThreshold);
 		txtNT.setText(String.valueOf(ShakeDetector.getShakeThreshold()));
 
 		OnSeekBarChangeListener sbCl = new OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 				ShakeDetector.setShakeThreshold((long) arg1);
+				setSpeedThresholdNote(arg1);
 				txtNT.setText(String.valueOf(arg1));
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
 			}
-
 		};
-
 		seekbar.setOnSeekBarChangeListener(sbCl);
 	}
 
@@ -129,21 +106,12 @@ public class Config extends Activity {
 		SkLog.d("Config onOptionsItemSelected,id=" + item.getItemId());
 		int id = item.getItemId();
 		if (id == R.id.action_about) {
-			new AlertDialog.Builder(Config.this).setTitle(getAboutTitle()).setMessage(getAboutInfo())
-					.setPositiveButton(this.getString(R.string.about_btnOk), null).show();
+			startActivity(new Intent(this, AboutActivity.class));
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
 
 		return true;
-	}
-
-	private String getAboutTitle() {
-		return this.getString(R.string.about_title) + " " + this.getString(R.string.app_name);
-	}
-
-	private String getAboutInfo() {
-		return this.getString(R.string.about_version) + "\n" + this.getString(R.string.about_auth);
 	}
 
 	@Override

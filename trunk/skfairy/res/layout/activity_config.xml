@@ -33,59 +33,54 @@
             android:layout_below="@+id/setting_text" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/lblVer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/View1"
-            android:text="@string/lblDelayTime" />
+            android:paddingTop="6dp"
+            android:text="@string/lblSettingInfo" />
 
         <TextView
-            android:id="@+id/txtDelay"
+            android:id="@+id/lblSpeedThreshold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView1"
-            android:layout_alignBottom="@+id/textView1"
+            android:layout_below="@+id/lblVer"
+            android:paddingTop="6dp"
+            android:text="@string/lblSpeedThreshold" />
+
+        <TextView
+            android:id="@+id/txtSpeedThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lblSpeedThreshold"
+            android:layout_alignTop="@+id/lblSpeedThreshold"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/textView1"
+            android:layout_toRightOf="@+id/lblSpeedThreshold"
+            android:paddingTop="6dp"
             android:textIsSelectable="false" />
 
         <SeekBar
-            android:id="@+id/skbDelay"
+            android:id="@+id/skbSpeedThreshold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView1"
-            android:max="800" />
+            android:layout_below="@+id/lblSpeedThreshold"
+            android:max="80"
+            android:paddingTop="3dp" />
 
         <TextView
-            android:id="@+id/lblNoiseThreshold"
+            android:id="@+id/lblSpeedThresholdNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/skbDelay"
-            android:text="@string/lblNoiseThreshold" />
-
-        <TextView
-            android:id="@+id/txtNoiseThreshold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/lblNoiseThreshold"
-            android:layout_alignBottom="@+id/lblNoiseThreshold"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/lblNoiseThreshold"
+            android:layout_below="@+id/skbSpeedThreshold"
+            android:paddingTop="6dp"
             android:textIsSelectable="false" />
-
-        <SeekBar
-            android:id="@+id/skbNoiseThreshold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lblNoiseThreshold"
-            android:max="80" />
 
         <TextView
             android:id="@+id/service_text"
             style="@style/AppThemeTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/skbNoiseThreshold"
+            android:layout_below="@+id/lblSpeedThresholdNote"
             android:layout_marginTop="14dp"
             android:text="@string/lblService"
             android:textIsSelectable="false" />
@@ -96,11 +91,21 @@
             android:layout_width="fill_parent"
             android:layout_below="@+id/service_text" />
 
+        <TextView
+            android:id="@+id/service_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ServiceSeparator"
+            android:paddingBottom="5dp"
+            android:paddingTop="3dp"
+            android:text="@string/lblServiceInfo"
+            android:textIsSelectable="false" />
+
         <Button
             android:id="@+id/btnStartService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ServiceSeparator"
+            android:layout_below="@+id/service_info"
             android:layout_marginLeft="6dp"
             android:text="@string/btnStartService" />
 
@@ -108,19 +113,11 @@
             android:id="@+id/btnStopService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ServiceSeparator"
+            android:layout_below="@+id/service_info"
             android:layout_marginLeft="120dp"
             android:layout_toRightOf="@+id/btnStartService"
             android:enabled="false"
             android:text="@string/btnStopService" />
-
-        <Switch
-            android:id="@+id/swcDebug"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnStartService"
-            android:layout_marginTop="14dp"
-            android:text="@string/lblDebug" />
     </RelativeLayout>
 
 </ScrollView>

@@ -10,7 +10,7 @@
     <!--
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -30,6 +30,11 @@
         </activity>
 
         <service android:name="com.skfairy.SkService" />
+
+        <activity
+            android:name="com.skfairy.AboutActivity"
+            android:label="@string/about.title" >
+        </activity>
     </application>
 
 </manifest>
