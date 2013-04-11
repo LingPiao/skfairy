@@ -11,9 +11,9 @@ import android.hardware.SensorManager;
 
 public class ShakeDetector implements SensorEventListener {
 
-	private static long DELAY = 50;
+	private static long DELAY = 100;
 
-	private static double SHAKE_SHRESHOLD = 2500d;
+	private static double SHAKE_SHRESHOLD = 800d;
 	private long lastTime = System.currentTimeMillis();
 	private float last_x;
 	private float last_y;
@@ -111,14 +111,6 @@ public class ShakeDetector implements SensorEventListener {
 	 */
 	public interface ShakeListener {
 		public void onShake(String value);
-	}
-
-	public static void setDelay(long delay) {
-		ShakeDetector.DELAY = delay;
-	}
-
-	public static long getDelay() {
-		return ShakeDetector.DELAY;
 	}
 
 	public static void setShakeThreshold(double threshold) {
