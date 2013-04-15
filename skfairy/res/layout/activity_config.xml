@@ -34,6 +34,7 @@
 
         <TextView
             android:id="@+id/lblVer"
+            style="@style/AppThemeDescripion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/View1"
@@ -93,6 +94,7 @@
 
         <TextView
             android:id="@+id/service_info"
+            style="@style/AppThemeDescripion"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ServiceSeparator"
@@ -107,17 +109,22 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/service_info"
             android:layout_marginLeft="6dp"
+            android:minHeight="38dip"
+            android:minWidth="100dip"
             android:text="@string/btnStartService" />
 
         <Button
             android:id="@+id/btnStopService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/service_info"
             android:layout_below="@+id/service_info"
-            android:layout_marginLeft="120dp"
-            android:layout_toRightOf="@+id/btnStartService"
+            android:layout_marginRight="23dp"
             android:enabled="false"
+            android:minHeight="38dip"
+            android:minWidth="100dip"
             android:text="@string/btnStopService" />
+
     </RelativeLayout>
 
 </ScrollView>

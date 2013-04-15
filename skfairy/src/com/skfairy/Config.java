@@ -59,7 +59,7 @@ public class Config extends Activity {
 	}
 
 	private void setSpeedThresholdNote(int threshold) {
-		if (threshold > 50) {
+		if (threshold > 30) {
 			speedNote.setText(this.getString(R.string.lblSpeedThresholdNote_l3));
 		} else if (threshold > 10) {
 			speedNote.setText(this.getString(R.string.lblSpeedThresholdNote_l2));
@@ -78,6 +78,9 @@ public class Config extends Activity {
 		OnSeekBarChangeListener sbCl = new OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+				if (arg1 < 3) {
+					arg1 = 3;
+				}
 				ShakeDetector.setShakeThreshold((long) arg1);
 				setSpeedThresholdNote(arg1);
 				txtNT.setText(String.valueOf(arg1));
