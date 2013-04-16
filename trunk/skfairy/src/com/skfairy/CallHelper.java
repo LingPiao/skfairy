@@ -10,6 +10,11 @@ import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
 
+/**
+ * 
+ * @author Kong,LingPiao
+ * 
+ */
 public class CallHelper {
 
 	public static void silenceCall(Context context) {
