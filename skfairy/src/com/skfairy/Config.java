@@ -12,6 +12,11 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author Kong,LingPiao
+ *
+ */
 public class Config extends Activity {
 	private Intent sks;
 	private TextView speedNote;
