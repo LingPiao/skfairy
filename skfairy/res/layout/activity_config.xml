@@ -109,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/service_info"
             android:layout_marginLeft="6dp"
+            android:enabled="false"
             android:minHeight="38dip"
             android:minWidth="100dip"
             android:text="@string/btnStartService" />
@@ -124,7 +125,6 @@
             android:minHeight="38dip"
             android:minWidth="100dip"
             android:text="@string/btnStopService" />
-
     </RelativeLayout>
 
 </ScrollView>

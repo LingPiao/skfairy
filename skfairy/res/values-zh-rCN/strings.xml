@@ -12,7 +12,7 @@
     <string name="lblSpeedThresholdNote.l3">提示: 使吃奶的劲摇吧,可别丢了你的爱机</string>
     <string name="lblSetting">设置</string>
     <string name="lblService">服务</string>
-    <string name="lblServiceInfo">点击下面的启动/停止按钮来启动/停止后台服务,当退出应用时服务会自动停止.打开应用时请启动服务以开启该功能</string>
+    <string name="lblServiceInfo">点击下面的启动/停止按钮来启动/停止后台服务,当应用打开时服务会自动启动.如果你不想使用该功能时请点击停止按钮来停用该服务.</string>
     <string name="about.title">关于</string>
     <string name="about.version">版本: V2.0</string>
     <string name="about.auth">作者:lingpiao.kong@gmail.com</string>
