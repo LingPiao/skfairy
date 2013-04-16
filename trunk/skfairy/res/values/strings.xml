@@ -14,7 +14,7 @@
     <string name="lblService">Service</string>
     <string name="lblServiceInfo">Using the following Start/Stop button to start/stop the service so that the app can run in background. The service will be stopped automatically when the app exits.Please start the service to enable its functions when you open the app.</string>
     <string name="about.title">About</string>
-    <string name="about.version">Version: V1.0</string>
+    <string name="about.version">Version: V2.0</string>
     <string name="about.auth">Author:lingpiao.kong@gmail.com</string>
     <string name="about.lblAppDesc">SKFairy is used to automatically answer your incoming call by shaking your phone,so that you can handle your call in one hand,it is useful especially when you have a phone with a large screen. It also monitors the Proximity sensor to avoid the wrong automatic answering of incoming call when your phone is pocketed. So please make sure that the Proximity sensor NOT be covered while shaking the phone when you want to use it to answer the incoming call.</string>
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
