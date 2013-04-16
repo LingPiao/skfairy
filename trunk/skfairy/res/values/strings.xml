@@ -12,7 +12,7 @@
     <string name="lblSpeedThresholdNote.l3">Tip: Shake hard and hold your phone,don\'t drop it</string>
     <string name="lblSetting">Setting</string>
     <string name="lblService">Service</string>
-    <string name="lblServiceInfo">Using the following Start/Stop button to start/stop the service so that the app can run in background. The service will be stopped automatically when the app exits.Please start the service to enable its functions when you open the app.</string>
+    <string name="lblServiceInfo">Using the following Start/Stop button to start/stop the service so that the app can run in background. The service will be started automatically when the app started.You can stop the service to disable it if you do NOT want use it sometimes.</string>
     <string name="about.title">About</string>
     <string name="about.version">Version: V2.0</string>
     <string name="about.auth">Author:lingpiao.kong@gmail.com</string>

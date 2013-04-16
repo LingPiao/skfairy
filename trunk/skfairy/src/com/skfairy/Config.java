@@ -15,7 +15,7 @@ import android.widget.TextView;
 /**
  * 
  * @author Kong,LingPiao
- *
+ * 
  */
 public class Config extends Activity {
 	private Intent sks;
@@ -36,6 +36,15 @@ public class Config extends Activity {
 
 		final Button btnStartService = (Button) findViewById(R.id.btnStartService);
 		final Button btnStopService = (Button) findViewById(R.id.btnStopService);
+
+		if (startService(sks) != null) {
+			SkLog.d("SkService is being started or already running");
+			btnStartService.setEnabled(false);
+			btnStopService.setEnabled(true);
+		} else {
+			btnStartService.setEnabled(true);
+			SkLog.d("SkService is not started");
+		}
 
 		OnClickListener ssLisn = new OnClickListener() {
 			public void onClick(View v) {
@@ -137,7 +146,7 @@ public class Config extends Activity {
 	@Override
 	protected void onDestroy() {
 		SkLog.d("Config onDestroy calling...");
-		stopService(sks);
+		//stopService(sks);
 		super.onDestroy();
 	}
 
