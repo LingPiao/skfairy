@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 
 import com.skfairy.ProximityDetector.ProximityListener;
@@ -18,9 +19,9 @@ public class SkService extends Service {
 	private ProximityDetector mProximityDetector;
 
 	private boolean shake4call = false;
-	// private int ringMode = AudioManager.RINGER_MODE_NORMAL;
-	// private boolean silenced = false;
 	private boolean isReadForAnswer = false;
+
+	private Vibrator vibrator = null;
 
 	// BroadcastReceiver for handling Phone call.
 	public BroadcastReceiver callReceiver = new BroadcastReceiver() {
@@ -43,11 +44,6 @@ public class SkService extends Service {
 					SkLog.d("onReceive Phone IDLE");
 					mShakeDetector.unRegisterListener();
 					mProximityDetector.unRegisterListener();
-					// if (silenced) {
-					// silenced = false;
-					// SkLog.d("set the ringmode back");
-					// CallHelper.setRingModeBack(SkService.this, ringMode);
-					// }
 				}
 			}
 		}
@@ -58,38 +54,25 @@ public class SkService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			SkLog.d("onReceive intent action:" + intent.getAction());
-			// Check action just to be on the safe side.
-			// if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-			// shake4call = false;
-			// SkLog.d("Register ACCELEROMETER listener when screen off");
-			// mShakeDetector.registerListener();
-
-			// SkLog.d("Register PROXIMITY listener when screen off");
-			// mProximityDetector.registerListener();
-			// }
 		}
 	};
 
 	@Override
 	public void onCreate() {
+		vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 		mShakeDetector = new ShakeDetector(SkService.this);
 		mShakeDetector.setOnShakeListener(new ShakeListener() {
 			@Override
 			public void onShake(String value) {
 				// mShakeDetector.unRegisterListener();
 				if (shake4call && isReadForAnswer) {
-					CallHelper.answerCall(SkService.this);
-					// CallHelper.silenceCall(SkService.this);
-					// silenced = true;
+					boolean answered = CallHelper.answerCall(SkService.this);
+					if (answered) {
+						// Short vibrating and only once
+						vibrator.vibrate(new long[] { 100, 300}, -1);
+					}
 				} else {
 					SkLog.d("Get onShake event with value:" + value);
-					// Locker.acquireCpuWakeLock(SkService.this);
-					// try {
-					// SkLog.d("Wait 2 seconds to light the screen on then release the wake lock");
-					// Thread.sleep(2000);
-					// } catch (InterruptedException e) {
-					// }
-					// Locker.releaseWakeLock();
 					notifyActivity(value);
 				}
 			}
