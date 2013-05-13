@@ -40,15 +40,15 @@ public class CallHelper {
 		return am.getRingerMode();
 	}
 
-	public static void answerCall(Context context) {
+	public static boolean answerCall(Context context) {
 		// Make sure the phone is still ringing
 		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		if (tm.getCallState() != TelephonyManager.CALL_STATE_RINGING) {
-			return;
+			return false;
 		}
 
 		// Answer the phone
-		answerPhoneHeadsethook(context);
+		return answerPhoneHeadsethook(context);
 		// try {
 		// answerPhoneAidl(context);
 		// } catch (Exception e) {
@@ -58,7 +58,7 @@ public class CallHelper {
 		// }
 	}
 
-	private static void answerPhoneHeadsethook(Context context) {
+	private static boolean answerPhoneHeadsethook(Context context) {
 		SkLog.d("CallHelper.answerPhoneHeadsethook()...");
 		// Simulate a press of the headset button to pick up the call
 		Intent buttonDown = new Intent(Intent.ACTION_MEDIA_BUTTON);
@@ -70,6 +70,7 @@ public class CallHelper {
 		buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
 		context.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
 		SkLog.d("CallHelper.answerPhoneHeadsethook() end");
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")
