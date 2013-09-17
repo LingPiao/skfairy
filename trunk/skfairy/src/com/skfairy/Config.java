@@ -1,13 +1,19 @@
 package com.skfairy;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -18,8 +24,13 @@ import android.widget.TextView;
  * 
  */
 public class Config extends Activity {
+	public static final String APP_CONFIG_KEY = "SK_FAIRY_CONF";
+	public static final String CONFIG_AUTO_START = "CONFIG_AUTO_START";
+
+	private SharedPreferences preferences = null;
 	private Intent sks;
 	private TextView speedNote;
+	private Editor pEditor = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +38,22 @@ public class Config extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_config);
 		// Toast.makeText(Config.this, "Showing...", Toast.LENGTH_SHORT).show();
+
+		preferences = getSharedPreferences(APP_CONFIG_KEY, Context.MODE_PRIVATE);
+		pEditor = preferences.edit();
+
+		CheckBox autoStartBtn = (CheckBox) findViewById(R.id.isAutoStart);
+		autoStartBtn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				pEditor.putBoolean(CONFIG_AUTO_START, isChecked);
+				pEditor.commit();
+			}
+		});
+
+		boolean isAutoStart = preferences.getBoolean(CONFIG_AUTO_START, false);
+
+		autoStartBtn.setChecked(isAutoStart);
 
 		speedNote = (TextView) findViewById(R.id.lblSpeedThresholdNote);
 
@@ -146,7 +173,7 @@ public class Config extends Activity {
 	@Override
 	protected void onDestroy() {
 		SkLog.d("Config onDestroy calling...");
-		//stopService(sks);
+		// stopService(sks);
 		super.onDestroy();
 	}
 
