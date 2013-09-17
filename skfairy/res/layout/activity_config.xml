@@ -125,6 +125,15 @@
             android:minHeight="38dip"
             android:minWidth="100dip"
             android:text="@string/btnStopService" />
+
+        <CheckBox
+            android:id="@+id/isAutoStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/service_text"
+            android:layout_toRightOf="@+id/txtSpeedThreshold"
+            android:text="@string/config.AutoStart" />
+
     </RelativeLayout>
 
 </ScrollView>

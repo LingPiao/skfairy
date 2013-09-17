@@ -18,5 +18,6 @@
     <string name="about.auth">Author:lingpiao.kong@gmail.com</string>
     <string name="about.lblAppDesc">SKFairy is used to automatically answer your incoming call by shaking your phone,so that you can handle your call in one hand,it is useful especially when you have a phone with a large screen. It also monitors the Proximity sensor to avoid the wrong automatic answering of incoming call when your phone is pocketed. So please make sure that the Proximity sensor NOT be covered while shaking the phone when you want to use it to answer the incoming call.</string>
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
+    <string name="config.AutoStart">AutoStart</string>
 
 </resources>
