@@ -127,7 +127,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
 
 		Intent gprsIntent = new Intent(SK_WIDGET_ACTION_CLICK);
 		gprsIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, 2);
-		PendingIntent gprsPi = PendingIntent.getBroadcast(context, 1, gprsIntent, 0);
+		PendingIntent gprsPi = PendingIntent.getBroadcast(context, 2, gprsIntent, 0);
 		remoteViews.setOnClickPendingIntent(R.id.gprs, gprsPi);
 
 		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
