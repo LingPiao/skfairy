@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/locker"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/widget.locker"
+        android:scaleType="fitCenter"
+        android:src="@drawable/kg_security_lock_pressed" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/airplaneMode"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/widget.locker"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_lock_airplane_mode" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/gprs"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/widget.locker"
+        android:scaleType="fitCenter"
+        android:src="@drawable/stat_sys_data_wimax_signal_disconnected" >
+    </ImageView>
+
+</LinearLayout>
