@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.RemoteViews;
@@ -21,6 +22,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
 	private static final String SK_WIDGET_ACTION_OPERATOR_KEY = "SK_WIDGET_ACTION_OPERATOR_KEY";
 	private RemoteViews remoteViews = null;
 	private static boolean isGPRSEnabled = false;
+	private static boolean wifiEnabled = false;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -87,6 +89,10 @@ public class SKWidgetProvider extends AppWidgetProvider {
 			SkLog.d("==============onReceive,operator=" + operator);
 			if (operator == Switch.WIFI.getValue()) {
 				SkLog.d("==============WIFI  ");
+				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				wifiEnabled = wifiManager.isWifiEnabled();
+				wifiManager.setWifiEnabled(!wifiEnabled);
+				wifiEnabled = !wifiEnabled;
 			} else if (operator == Switch.LOCK.getValue()) {
 				if (admin) {
 					mDPM.lockNow();
@@ -135,6 +141,11 @@ public class SKWidgetProvider extends AppWidgetProvider {
 		Intent wifiIntent = new Intent(SK_WIDGET_ACTION_CLICK);
 		wifiIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.WIFI.getValue());
 		PendingIntent wifiPi = PendingIntent.getBroadcast(context, Switch.WIFI.getValue(), wifiIntent, 0);
+		if (wifiEnabled) {
+			remoteViews.setImageViewResource(R.id.wifi, R.drawable.wifi_enabled);
+		} else {
+			remoteViews.setImageViewResource(R.id.wifi, R.drawable.wifi);
+		}
 		remoteViews.setOnClickPendingIntent(R.id.wifi, wifiPi);
 	}
 
