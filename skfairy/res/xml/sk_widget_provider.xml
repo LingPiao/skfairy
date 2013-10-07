@@ -3,5 +3,7 @@
     android:initialLayout="@layout/sk_widget"
     android:minHeight="40dp"
     android:minWidth="180dp"
-    android:updatePeriodMillis="100000" >
-</appwidget-provider>
+    android:previewImage="@drawable/widget_pre"
+    android:updatePeriodMillis="86400000" >
+
+</appwidget-provider>
