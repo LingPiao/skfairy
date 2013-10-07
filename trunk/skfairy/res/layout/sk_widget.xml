@@ -1,21 +1,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:id="@+id/widgetBkg"
+    android:layout_width="240dp"
+    android:layout_height="60dp" >
 
     <ImageView
-        android:id="@+id/locker"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:id="@+id/wifi"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:contentDescription="@string/widget.locker"
         android:scaleType="fitCenter"
-        android:src="@drawable/kg_security_lock_pressed" >
+        android:src="@drawable/wifi" >
     </ImageView>
 
     <ImageView
         android:id="@+id/airplaneMode"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:contentDescription="@string/widget.locker"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_lock_airplane_mode" >
@@ -23,11 +24,20 @@
 
     <ImageView
         android:id="@+id/gprs"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:contentDescription="@string/widget.locker"
         android:scaleType="fitCenter"
-        android:src="@drawable/stat_sys_data_wimax_signal_disconnected" >
+        android:src="@drawable/gprs" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/locker"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:contentDescription="@string/widget.locker"
+        android:scaleType="fitCenter"
+        android:src="@drawable/kg_security_lock" >
     </ImageView>
 
 </LinearLayout>

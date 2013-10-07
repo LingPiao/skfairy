@@ -16,34 +16,39 @@ import android.provider.Settings;
 import android.widget.RemoteViews;
 
 public class SKWidgetProvider extends AppWidgetProvider {
+
 	private static final String SK_WIDGET_ACTION_CLICK = "android.sk.widget.action.click";
 	private static final String SK_WIDGET_ACTION_OPERATOR_KEY = "SK_WIDGET_ACTION_OPERATOR_KEY";
 	private RemoteViews remoteViews = null;
+	private static boolean isGPRSEnabled = false;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		SkLog.d("==============onUpdate");
-		if (remoteViews == null)
-			remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
-
-		final int len = appWidgetIds.length;
-		int wid = R.id.locker;
-		for (int i = 0; i < len; i++) {
-			int appWidgetId = appWidgetIds[i];
-			Intent intent = new Intent(SK_WIDGET_ACTION_CLICK);
-			intent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, i);
-			SkLog.d("==============putExtra:" + i);
-			PendingIntent pi = PendingIntent.getBroadcast(context, i, intent, 0);
-			if (i == 0) {
-				wid = R.id.locker;
-			} else if (i == 1) {
-				wid = R.id.airplaneMode;
-			} else if (i == 2) {
-				wid = R.id.gprs;
-			}
-			remoteViews.setOnClickPendingIntent(wid, pi);
-			appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-		}
+		// SkLog.d("==============onUpdate");
+		// if (remoteViews == null)
+		// remoteViews = new RemoteViews(context.getPackageName(),
+		// R.layout.sk_widget);
+		//
+		// final int len = appWidgetIds.length;
+		// int wid = R.id.wifi;
+		// for (int i = 0; i < len; i++) {
+		// int appWidgetId = appWidgetIds[i];
+		// Intent intent = new Intent(SK_WIDGET_ACTION_CLICK);
+		// intent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, i);
+		// SkLog.d("==============putExtra:" + i);
+		// PendingIntent pi = PendingIntent.getBroadcast(context, i, intent, 0);
+		// if (i == Switch.WIFI.getValue()) {
+		// wid = R.id.wifi;
+		// } else if (i == Switch.AIRPLANE.getValue()) {
+		// wid = R.id.airplaneMode;
+		// } else if (i == Switch.GPRS.getValue()) {
+		// wid = R.id.gprs;
+		// } else if (i == Switch.LOCK.getValue()) {
+		// wid = R.id.locker;
+		// }
+		// remoteViews.setOnClickPendingIntent(wid, pi);
+		// appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+		// }
 	}
 
 	@Override
@@ -64,56 +69,109 @@ public class SKWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (remoteViews == null)
-			remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
+		remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
 
-		SkLog.d("==============SKWidgetIntentReceiver.onReceive(),action=" + intent.getAction());
+		SkLog.d("==============onReceive,action=" + intent.getAction());
 		if (intent.getAction().equals(SK_WIDGET_ACTION_CLICK)) {
 			DevicePolicyManager mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 			ComponentName devAdminReceiver = new ComponentName(context, Darclass.class);
 			boolean admin = mDPM.isAdminActive(devAdminReceiver);
-			if (admin) {
+			int operator = 0;
 
-				int operator = 0;
-
-				Bundle bundle = intent.getExtras();
-				if (bundle != null) {
-					operator = bundle.getInt(SK_WIDGET_ACTION_OPERATOR_KEY, 0);
-				}
-
-				if (operator == 0) {
-					// mDPM.lockNow();
-					SkLog.d("==============Screen locked.");
-				} else if (operator == 1) {
-					Intent i = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					context.startActivity(i);
-
-					SkLog.d("==============AirplaneMode");
-				} else if (operator == 2) {
-					try {
-						setMobileDataEnabled(context, false);
-					} catch (Exception e) {
-
-					}
-					SkLog.d("==============Gprs");
-				}
-
+			Bundle bundle = intent.getExtras();
+			if (bundle != null) {
+				operator = bundle.getInt(SK_WIDGET_ACTION_OPERATOR_KEY, 0);
 			} else {
-				SkLog.d("Not an admin");
+				SkLog.d("==============bundle is null");
+			}
+			SkLog.d("==============onReceive,operator=" + operator);
+			if (operator == Switch.WIFI.getValue()) {
+				SkLog.d("==============WIFI  ");
+			} else if (operator == Switch.LOCK.getValue()) {
+				if (admin) {
+					mDPM.lockNow();
+					SkLog.d("==============Screen locked.");
+				} else {
+					SkLog.d("Not an admin");
+				}
+			} else if (operator == Switch.AIRPLANE.getValue()) {
+				Intent i = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(i);
+				SkLog.d("==============AirplaneMode");
+			} else if (operator == Switch.GPRS.getValue()) {
+				try {
+					setMobileDataEnabled(context, !isGPRSEnabled);
+					isGPRSEnabled = !isGPRSEnabled;
+					if (isGPRSEnabled) {
+						SkLog.d("==============GPRS enabled");
+						remoteViews.setImageViewResource(R.id.gprs, R.drawable.gprs_enabled);
+					} else {
+						SkLog.d("==============GPRS disabled");
+						remoteViews.setImageViewResource(R.id.gprs, R.drawable.gprs);
+					}
+				} catch (Exception e) {
+
+				}
+				SkLog.d("==============Gprs");
 			}
 		}
 
+		updateStatus(context);
+	}
+
+	private void updateStatus(Context context) {
 		AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
 
-		Intent lockIntent = new Intent(SK_WIDGET_ACTION_CLICK);
-		lockIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, 0);
-		PendingIntent lockPi = PendingIntent.getBroadcast(context, 0, lockIntent, 0);
-		remoteViews.setOnClickPendingIntent(R.id.locker, lockPi);
+		wifiClick(context);
+		airplanClick(context);
+		moblieNetClick(context);
+		lockClick(context);
 
+		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
+	}
+
+	private void wifiClick(Context context) {
+		Intent wifiIntent = new Intent(SK_WIDGET_ACTION_CLICK);
+		wifiIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.WIFI.getValue());
+		PendingIntent wifiPi = PendingIntent.getBroadcast(context, Switch.WIFI.getValue(), wifiIntent, 0);
+		remoteViews.setOnClickPendingIntent(R.id.wifi, wifiPi);
+	}
+
+	private void moblieNetClick(Context context) {
+		Intent gprsIntent = new Intent(SK_WIDGET_ACTION_CLICK);
+		gprsIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.GPRS.getValue());
+		PendingIntent gprsPi = PendingIntent.getBroadcast(context, Switch.GPRS.getValue(), gprsIntent, 0);
+		// ConnectivityManager conman = (ConnectivityManager)
+		// context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		// NetworkInfo mNet =
+		// conman.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		// if (mNet != null) {
+		// if (mNet.isAvailable() && mNet.isConnected()) {
+		// isGPRSEnabled = true;
+		// } else {
+		// isGPRSEnabled = false;
+		// }
+		// } else {
+		// isGPRSEnabled = false;
+		// SkLog.d("==============mNet is null, GPRS disabled");
+		// }
+
+		if (isGPRSEnabled) {
+			SkLog.d("==============GPRS enabled");
+			remoteViews.setImageViewResource(R.id.gprs, R.drawable.gprs_enabled);
+		} else {
+			SkLog.d("==============GPRS disabled");
+			remoteViews.setImageViewResource(R.id.gprs, R.drawable.gprs);
+		}
+
+		remoteViews.setOnClickPendingIntent(R.id.gprs, gprsPi);
+	}
+
+	private void airplanClick(Context context) {
 		Intent airplaneModeIntent = new Intent(SK_WIDGET_ACTION_CLICK);
-		airplaneModeIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, 1);
-		PendingIntent airplanePi = PendingIntent.getBroadcast(context, 1, airplaneModeIntent, 0);
+		airplaneModeIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.AIRPLANE.getValue());
+		PendingIntent airplanePi = PendingIntent.getBroadcast(context, Switch.AIRPLANE.getValue(), airplaneModeIntent, 0);
 
 		boolean airplaneEnabled = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
 		if (airplaneEnabled) {
@@ -124,16 +182,19 @@ public class SKWidgetProvider extends AppWidgetProvider {
 			remoteViews.setImageViewResource(R.id.airplaneMode, R.drawable.ic_lock_airplane_mode);
 		}
 		remoteViews.setOnClickPendingIntent(R.id.airplaneMode, airplanePi);
+	}
 
-		Intent gprsIntent = new Intent(SK_WIDGET_ACTION_CLICK);
-		gprsIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, 2);
-		PendingIntent gprsPi = PendingIntent.getBroadcast(context, 2, gprsIntent, 0);
-		remoteViews.setOnClickPendingIntent(R.id.gprs, gprsPi);
+	private void lockClick(Context context) {
 
-		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
+		Intent mylockIntent = new Intent(SK_WIDGET_ACTION_CLICK);
+		mylockIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.LOCK.getValue());
+		PendingIntent mylockPi = PendingIntent.getBroadcast(context, Switch.LOCK.getValue(), mylockIntent, 0);
+
+		remoteViews.setOnClickPendingIntent(R.id.locker, mylockPi);
 	}
 
 	private void setMobileDataEnabled(Context context, boolean enabled) throws Exception {
+		SkLog.d("==============setMobileDataEnabled:" + enabled);
 		ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		Class<?> conmanClass = Class.forName(conman.getClass().getName());
 		Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
