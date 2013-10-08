@@ -73,7 +73,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
-		AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
+
 		SkLog.d("==============onReceive,action=" + intent.getAction());
 
 		String act = intent.getAction();
@@ -124,21 +124,22 @@ public class SKWidgetProvider extends AppWidgetProvider {
 				}
 				SkLog.d("==============Gprs");
 			}
-			updateStatus(context);
+
 		} else if (act.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			wifiEnabled = wifiManager.isWifiEnabled();
-			wifiClick(context);
 		}
-		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
+		updateStatus(context);
 	}
 
 	private void updateStatus(Context context) {
+		AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
 		wifiClick(context);
 		airplanClick(context);
 		phoneModelClick(context);
 		moblieNetClick(context);
 		lockClick(context);
+		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
 	}
 
 	private void wifiClick(Context context) {
