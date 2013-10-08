@@ -28,31 +28,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		// SkLog.d("==============onUpdate");
-		// if (remoteViews == null)
-		// remoteViews = new RemoteViews(context.getPackageName(),
-		// R.layout.sk_widget);
-		//
-		// final int len = appWidgetIds.length;
-		// int wid = R.id.wifi;
-		// for (int i = 0; i < len; i++) {
-		// int appWidgetId = appWidgetIds[i];
-		// Intent intent = new Intent(SK_WIDGET_ACTION_CLICK);
-		// intent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, i);
-		// SkLog.d("==============putExtra:" + i);
-		// PendingIntent pi = PendingIntent.getBroadcast(context, i, intent, 0);
-		// if (i == Switch.WIFI.getValue()) {
-		// wid = R.id.wifi;
-		// } else if (i == Switch.AIRPLANE.getValue()) {
-		// wid = R.id.airplaneMode;
-		// } else if (i == Switch.GPRS.getValue()) {
-		// wid = R.id.gprs;
-		// } else if (i == Switch.LOCK.getValue()) {
-		// wid = R.id.locker;
-		// }
-		// remoteViews.setOnClickPendingIntent(wid, pi);
-		// appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-		// }
+		// Nothing to do
 	}
 
 	@Override
@@ -68,16 +44,37 @@ public class SKWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		SkLog.d("==============SKWidgetProvider.onEnabled");
+		if (remoteViews == null) {
+			remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
+		}
 
+		checkWifiStatus(context);
+		checkGPRSStatus(context);
+
+		updateStatus(context);
+	}
+
+	private void checkWifiStatus(Context context) {
+		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		wifiEnabled = wifiManager.isWifiEnabled();
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
-
-		SkLog.d("==============onReceive,action=" + intent.getAction());
 
 		String act = intent.getAction();
+		if (act.equals(Intent.ACTION_SCREEN_OFF) || act.equals(Intent.ACTION_SCREEN_OFF)) {
+			return;
+		}
+		SkLog.d("==============onReceive,action=" + act);
+
+		if (remoteViews == null) {
+			remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
+		}
+
+		checkWifiStatus(context);
+		checkGPRSStatus(context);
+
 		if (act.equals(SK_WIDGET_ACTION_CLICK)) {
 			DevicePolicyManager mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 			ComponentName devAdminReceiver = new ComponentName(context, Darclass.class);
@@ -94,7 +91,6 @@ public class SKWidgetProvider extends AppWidgetProvider {
 			if (operator == Switch.WIFI.getValue()) {
 				SkLog.d("==============WIFI  ");
 				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				wifiEnabled = wifiManager.isWifiEnabled();
 				wifiManager.setWifiEnabled(!wifiEnabled);
 				wifiEnabled = !wifiEnabled;
 			} else if (operator == Switch.LOCK.getValue()) {
@@ -136,27 +132,31 @@ public class SKWidgetProvider extends AppWidgetProvider {
 				}
 			}
 
-		} else if (act.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
-			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-			wifiEnabled = wifiManager.isWifiEnabled();
-		} else if (act.equals(AudioManager.RINGER_MODE_CHANGED_ACTION)) {
-			// nothing to do
-		} else if (act.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-			ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mNet = conman.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-			if (mNet != null) {
-				if (mNet.isAvailable() && mNet.isConnected()) {
-					isGPRSEnabled = true;
-				} else {
-					isGPRSEnabled = false;
-				}
-			} else {
-				isGPRSEnabled = false;
-				SkLog.d("==============mNet is null, GPRS disabled");
-			}
 		}
+		// else if (act.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
+		// checkWifiStatus(context);
+		// } else if (act.equals(AudioManager.RINGER_MODE_CHANGED_ACTION)) {
+		// // nothing to do
+		// } else if (act.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+		// checkGPRSStatus(context);
+		// }
 
 		updateStatus(context);
+	}
+
+	private void checkGPRSStatus(Context context) {
+		ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mNet = conman.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		if (mNet != null) {
+			if (mNet.isAvailable() && mNet.isConnected()) {
+				isGPRSEnabled = true;
+			} else {
+				isGPRSEnabled = false;
+			}
+		} else {
+			isGPRSEnabled = false;
+			SkLog.d("==============mNet is null, GPRS disabled");
+		}
 	}
 
 	private void updateStatus(Context context) {
