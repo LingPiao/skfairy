@@ -52,6 +52,7 @@
             <intent-filter>
                 <action android:name="android.sk.widget.action.click" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
             </intent-filter>
 
             <meta-data

@@ -10,6 +10,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -72,9 +73,11 @@ public class SKWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		remoteViews = new RemoteViews(context.getPackageName(), R.layout.sk_widget);
-
+		AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
 		SkLog.d("==============onReceive,action=" + intent.getAction());
-		if (intent.getAction().equals(SK_WIDGET_ACTION_CLICK)) {
+
+		String act = intent.getAction();
+		if (act.equals(SK_WIDGET_ACTION_CLICK)) {
 			DevicePolicyManager mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 			ComponentName devAdminReceiver = new ComponentName(context, Darclass.class);
 			boolean admin = mDPM.isAdminActive(devAdminReceiver);
@@ -121,20 +124,21 @@ public class SKWidgetProvider extends AppWidgetProvider {
 				}
 				SkLog.d("==============Gprs");
 			}
+			updateStatus(context);
+		} else if (act.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
+			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			wifiEnabled = wifiManager.isWifiEnabled();
+			wifiClick(context);
 		}
-
-		updateStatus(context);
+		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
 	}
 
 	private void updateStatus(Context context) {
-		AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
-
 		wifiClick(context);
 		airplanClick(context);
+		phoneModelClick(context);
 		moblieNetClick(context);
 		lockClick(context);
-
-		appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
 	}
 
 	private void wifiClick(Context context) {
@@ -147,6 +151,31 @@ public class SKWidgetProvider extends AppWidgetProvider {
 			remoteViews.setImageViewResource(R.id.wifi, R.drawable.wifi);
 		}
 		remoteViews.setOnClickPendingIntent(R.id.wifi, wifiPi);
+	}
+
+	private void phoneModelClick(Context context) {
+		Intent mInt = new Intent(SK_WIDGET_ACTION_CLICK);
+		mInt.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.MODEL.getValue());
+		PendingIntent mPi = PendingIntent.getBroadcast(context, Switch.MODEL.getValue(), mInt, 0);
+
+		AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		int m = am.getRingerMode();
+		if (m == AudioManager.RINGER_MODE_NORMAL) {
+			remoteViews.setImageViewResource(R.id.model, R.drawable.ring_on);
+			// am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+			// remoteViews.setImageViewResource(R.id.model,
+			// R.drawable.vibrate_on);
+		} else if (m == AudioManager.RINGER_MODE_SILENT) {
+			remoteViews.setImageViewResource(R.id.model, R.drawable.silent);
+			// am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+			// remoteViews.setImageViewResource(R.id.model, R.drawable.ring_on);
+		} else {
+			// am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+			// remoteViews.setImageViewResource(R.id.model, R.drawable.silent);
+			remoteViews.setImageViewResource(R.id.model, R.drawable.vibrate_on);
+		}
+
+		remoteViews.setOnClickPendingIntent(R.id.model, mPi);
 	}
 
 	private void moblieNetClick(Context context) {
