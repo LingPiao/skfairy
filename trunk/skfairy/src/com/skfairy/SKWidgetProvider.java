@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -123,12 +124,38 @@ public class SKWidgetProvider extends AppWidgetProvider {
 
 				}
 				SkLog.d("==============Gprs");
+			} else if (operator == Switch.MODEL.getValue()) {
+				AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+				int m = am.getRingerMode();
+				if (m == AudioManager.RINGER_MODE_NORMAL) {
+					am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+				} else if (m == AudioManager.RINGER_MODE_SILENT) {
+					am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+				} else {
+					am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+				}
 			}
 
 		} else if (act.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			wifiEnabled = wifiManager.isWifiEnabled();
+		} else if (act.equals(AudioManager.RINGER_MODE_CHANGED_ACTION)) {
+			// nothing to do
+		} else if (act.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+			ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mNet = conman.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			if (mNet != null) {
+				if (mNet.isAvailable() && mNet.isConnected()) {
+					isGPRSEnabled = true;
+				} else {
+					isGPRSEnabled = false;
+				}
+			} else {
+				isGPRSEnabled = false;
+				SkLog.d("==============mNet is null, GPRS disabled");
+			}
 		}
+
 		updateStatus(context);
 	}
 
@@ -163,16 +190,9 @@ public class SKWidgetProvider extends AppWidgetProvider {
 		int m = am.getRingerMode();
 		if (m == AudioManager.RINGER_MODE_NORMAL) {
 			remoteViews.setImageViewResource(R.id.model, R.drawable.ring_on);
-			// am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-			// remoteViews.setImageViewResource(R.id.model,
-			// R.drawable.vibrate_on);
 		} else if (m == AudioManager.RINGER_MODE_SILENT) {
 			remoteViews.setImageViewResource(R.id.model, R.drawable.silent);
-			// am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-			// remoteViews.setImageViewResource(R.id.model, R.drawable.ring_on);
 		} else {
-			// am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-			// remoteViews.setImageViewResource(R.id.model, R.drawable.silent);
 			remoteViews.setImageViewResource(R.id.model, R.drawable.vibrate_on);
 		}
 
@@ -183,20 +203,6 @@ public class SKWidgetProvider extends AppWidgetProvider {
 		Intent gprsIntent = new Intent(SK_WIDGET_ACTION_CLICK);
 		gprsIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.GPRS.getValue());
 		PendingIntent gprsPi = PendingIntent.getBroadcast(context, Switch.GPRS.getValue(), gprsIntent, 0);
-		// ConnectivityManager conman = (ConnectivityManager)
-		// context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		// NetworkInfo mNet =
-		// conman.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-		// if (mNet != null) {
-		// if (mNet.isAvailable() && mNet.isConnected()) {
-		// isGPRSEnabled = true;
-		// } else {
-		// isGPRSEnabled = false;
-		// }
-		// } else {
-		// isGPRSEnabled = false;
-		// SkLog.d("==============mNet is null, GPRS disabled");
-		// }
 
 		if (isGPRSEnabled) {
 			SkLog.d("==============GPRS enabled");

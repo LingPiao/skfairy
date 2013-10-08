@@ -14,7 +14,7 @@
     <string name="lblService">服务</string>
     <string name="lblServiceInfo">点击下面的启动/停止按钮来启动/停止后台服务,当应用打开时服务会自动启动.如果你不想使用该功能时请点击停止按钮来停用该服务.</string>
     <string name="about.title">关于</string>
-    <string name="about.version">版本: V2.1</string>
+    <string name="about.version">版本: V3.0</string>
     <string name="about.auth">作者:lingpiao.kong@gmail.com</string>
     <string name="about.lblAppDesc">摇动手机自动接听来电，在以下情况下很有用: \n1. 你有一个大屏幕智能手机\n2.不喜欢两只手一起搞定来电时\n3.驾车（例如：驾自行车）时想接听紧急来电[驾车通电话是危险的违法行为！：）]\n\n别担心:\n1,误接电话\n   她有距离感应功能,所以不会在你装着手机走路的时候自动接听你的来电\n2,浪费你宝贵的电池\n  她只在你有来电的时候启动,完事就自动关闭,呼之则来,挂之即去.不会无端消耗你宝贵的电池</string>
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
