@@ -26,6 +26,7 @@ import android.widget.TextView;
 public class Config extends Activity {
 	public static final String APP_CONFIG_KEY = "SK_FAIRY_CONF";
 	public static final String CONFIG_AUTO_START = "CONFIG_AUTO_START";
+	public static final String CONFIG_SPEED_THRESHOLD = "CONFIG_SPEED_THRESHOLD";
 
 	private SharedPreferences preferences = null;
 	private Intent sks;
@@ -111,10 +112,11 @@ public class Config extends Activity {
 
 	private void setSpeedThreshold() {
 		SeekBar seekbar = (SeekBar) findViewById(R.id.skbSpeedThreshold);
-		seekbar.setProgress(ShakeDetector.getShakeThreshold());
-		setSpeedThresholdNote(ShakeDetector.getShakeThreshold());
+		int speedThreshold = preferences.getInt(CONFIG_SPEED_THRESHOLD, 8);
+		seekbar.setProgress(speedThreshold);
+		setSpeedThresholdNote(speedThreshold);
 		final TextView txtNT = (TextView) findViewById(R.id.txtSpeedThreshold);
-		txtNT.setText(String.valueOf(ShakeDetector.getShakeThreshold()));
+		txtNT.setText(String.valueOf(speedThreshold));
 
 		OnSeekBarChangeListener sbCl = new OnSeekBarChangeListener() {
 			@Override
@@ -125,6 +127,8 @@ public class Config extends Activity {
 				ShakeDetector.setShakeThreshold((long) arg1);
 				setSpeedThresholdNote(arg1);
 				txtNT.setText(String.valueOf(arg1));
+				pEditor.putInt(CONFIG_SPEED_THRESHOLD, arg1);
+				pEditor.commit();
 			}
 
 			@Override
@@ -150,7 +154,7 @@ public class Config extends Activity {
 		SkLog.d("Config onOptionsItemSelected,id=" + item.getItemId());
 		int id = item.getItemId();
 		if (id == R.id.action_about) {
-			startActivity(new Intent(this, AboutActivity.class));
+			// startActivity(new Intent(this, AboutActivity.class));
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
