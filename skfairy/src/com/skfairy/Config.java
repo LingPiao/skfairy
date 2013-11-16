@@ -1,6 +1,8 @@
 package com.skfairy;
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +37,7 @@ public class Config extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		SkLog.d("Config onCreate calling...");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_config);
@@ -98,6 +101,8 @@ public class Config extends Activity {
 		};
 
 		btnStopService.setOnClickListener(stsLisn);
+
+		activeAdmin();
 	}
 
 	private void setSpeedThresholdNote(int threshold) {
@@ -179,6 +184,22 @@ public class Config extends Activity {
 		SkLog.d("Config onDestroy calling...");
 		// stopService(sks);
 		super.onDestroy();
+	}
+	
+	private void activeAdmin() {
+		DevicePolicyManager mDPM = (DevicePolicyManager) this.getSystemService(Context.DEVICE_POLICY_SERVICE);
+		ComponentName devAdminReceiver = new ComponentName(this, Darclass.class);
+		boolean admin = mDPM.isAdminActive(devAdminReceiver);
+		if (!admin) {
+			SkLog.d("Not admin pop activate admin...");
+			Intent activateDeviceAdminIntent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+			activateDeviceAdminIntent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, devAdminReceiver);
+			activateDeviceAdminIntent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, this.getResources().getString(R.string.app_name));
+			// activateDeviceAdminIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			int REQ_ACTIVATE_DEVICE_ADMIN = 10;
+			this.startActivityForResult(activateDeviceAdminIntent, REQ_ACTIVATE_DEVICE_ADMIN);
+		}
+
 	}
 
 }
