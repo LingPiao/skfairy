@@ -7,8 +7,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -17,7 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
@@ -46,6 +44,11 @@
 
         <service android:name="com.skfairy.SkService" />
 
+        <activity
+            android:name="com.skfairy.AboutActivity"
+            android:label="@string/about.title" >
+        </activity>
+
         <receiver android:name="SKWidgetProvider" >
             <intent-filter>
                 <action android:name="android.sk.widget.action.click" />
@@ -58,17 +61,6 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/sk_widget_provider" />
-        </receiver>
-        <receiver android:name="com.skfairy.weather.WTWidgetProvider" >
-            <intent-filter>
-                <action android:name="android.sk.widget.wt.action.click" />
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/wt_widget_provider" />
         </receiver>
         <receiver
             android:name="Darclass"
