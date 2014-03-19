@@ -20,5 +20,8 @@
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
     <string name="config.AutoStart">开机启动</string>
     <string name="widget.locker">锁屏</string>
+    <string name="widget.weather.loading">加载中...</string>
+    <string name="widget.weather.note">打开网络后点击获取天气信息</string>
+    <string name="widget.weather.no.inet">木网络偶不干</string>
 
 </resources>
