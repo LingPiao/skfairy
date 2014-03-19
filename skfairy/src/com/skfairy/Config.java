@@ -34,7 +34,6 @@ public class Config extends Activity {
 	private Intent sks;
 	private TextView speedNote;
 	private Editor pEditor = null;
-	//private boolean isExit = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +185,7 @@ public class Config extends Activity {
 		// stopService(sks);
 		super.onDestroy();
 	}
-
+	
 	private void activeAdmin() {
 		DevicePolicyManager mDPM = (DevicePolicyManager) this.getSystemService(Context.DEVICE_POLICY_SERVICE);
 		ComponentName devAdminReceiver = new ComponentName(this, Darclass.class);
@@ -202,27 +201,5 @@ public class Config extends Activity {
 		}
 
 	}
-	//
-	// @Override
-	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// if (keyCode == KeyEvent.KEYCODE_BACK) {
-	// quit();
-	// return false;
-	// } else {
-	// return super.onKeyDown(keyCode, event);
-	// }
-	// }
-	//
-	// private void quit() {
-	// if (isExit) {
-	// Intent intent = new Intent(Intent.ACTION_MAIN);
-	// intent.addCategory(Intent.CATEGORY_HOME);
-	// startActivity(intent);
-	// System.exit(0);
-	// } else {
-	// isExit = true;
-	// Toast.makeText(this, "Press again to Exit", Toast.LENGTH_SHORT).show();
-	// }
-	// }
 
 }

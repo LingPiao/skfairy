@@ -95,7 +95,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
 				wifiEnabled = !wifiEnabled;
 			} else if (operator == Switch.LOCK.getValue()) {
 				if (admin) {
-					lockPhone(context, mDPM);
+					mDPM.lockNow();
 					SkLog.d("==============Screen locked.");
 				} else {
 					SkLog.d("Not an admin");
@@ -142,37 +142,6 @@ public class SKWidgetProvider extends AppWidgetProvider {
 		// }
 
 		updateStatus(context);
-	}
-
-	private void lockPhone(final Context context, final DevicePolicyManager mDPM) {
-		if (Util.isV411()) {
-			// KeyguardManager myKeyGuard = (KeyguardManager)
-			// context.getSystemService(Context.KEYGUARD_SERVICE);
-			// KeyguardLock myLock = myKeyGuard.newKeyguardLock("SFLock");
-			// myLock.disableKeyguard();
-
-			mDPM.lockNow();
-
-			// SkLog.d("==============Using handler to lock");
-			// Handler handlerUI = new Handler();
-			// handlerUI.postDelayed(new Runnable() {
-			// @Override
-			// public void run() {
-			// mDPM.lockNow();
-			// SkLog.d("==============Using handler to lock:1");
-			// }
-			// }, 400);
-			// Handler handlerUI2 = new Handler();
-			// handlerUI2.postDelayed(new Runnable() {
-			// @Override
-			// public void run() {
-			// mDPM.lockNow();
-			// SkLog.d("==============Using handler to lock:2");
-			// }
-			// }, 800);
-		} else {
-			mDPM.lockNow();
-		}
 	}
 
 	private void checkGPRSStatus(Context context) {
