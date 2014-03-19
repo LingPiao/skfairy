@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">摇呗</string>
+    <string name="action_settings">关于</string>
+    <string name="btnStartService">启动</string>
+    <string name="btnStopService">停止</string>
+    <string name="lblSettingInfo">设置摇动灵敏度.越小越灵敏,可根据个人使用情况来设置</string>
+    <string name="lblSpeedThreshold">灵敏度:</string>
+    <string name="lblSpeedThresholdNote.l1">提示: 晃晃就行,我喜欢这样设置.</string>
+    <string name="lblSpeedThresholdNote.l2">提示: 摇吧</string>
+    <string name="lblSpeedThresholdNote.l3">提示: 使吃奶的劲摇吧,可别丢了你的爱机</string>
+    <string name="lblSetting">设置</string>
+    <string name="lblService">服务</string>
+    <string name="lblServiceInfo">点击下面的启动/停止按钮来启动/停止后台服务,当应用打开时服务会自动启动.如果你不想使用该功能时请点击停止按钮来停用该服务.</string>
+    <string name="about.title">关于</string>
+    <string name="about.version">版本: V3.0</string>
+    <string name="about.auth">作者:lingpiao.kong@gmail.com</string>
+    <string name="about.lblAppDesc">摇动手机自动接听来电，在以下情况下很有用: \n1. 你有一个大屏幕智能手机\n2.不喜欢两只手一起搞定来电时\n3.驾车（例如：驾自行车）时想接听紧急来电[驾车通电话是危险的违法行为！：）]\n\n别担心:\n1,误接电话\n   她有距离感应功能,所以不会在你装着手机走路的时候自动接听你的来电\n2,浪费你宝贵的电池\n  她只在你有来电的时候启动,完事就自动关闭,呼之则来,挂之即去.不会无端消耗你宝贵的电池</string>
+    <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
+    <string name="config.AutoStart">开机启动</string>
+    <string name="widget.locker">锁屏</string>
+
+</resources>

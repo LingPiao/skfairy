@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wtWidgetCtn"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="#40000000" >
+
+    <TextView
+        android:id="@+id/weatherInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:padding="5sp"
+        android:text="@string/widget.weather.note" />
+
+</LinearLayout>

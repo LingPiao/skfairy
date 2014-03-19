@@ -1,0 +1,49 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="BlackTheme">
+        <item name="android:background">#222222</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="BlackThemeTitle" parent="@style/BlackTheme">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BlackThemeSeparator">
+        <item name="android:background">#606060</item>
+        <item name="android:layout_height">2dp</item>
+    </style>
+
+    <style name="AppThemeTitle">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="AppThemeDescripion">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#7F6767</item>
+    </style>
+
+    <style name="AppThemeSeparator">
+        <item name="android:background">#909090</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+</resources>

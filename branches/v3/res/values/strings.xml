@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SKFairy</string>
+    <string name="action_settings">About</string>
+    <string name="btnStartService">Start</string>
+    <string name="btnStopService">Stop</string>
+    <string name="lblSettingInfo">Setting the speed threshod for the shake which used to indicate whether the detected shake should be responsed(answer the incoming call automaically when its speed more than the specified threshold) or not.</string>
+    <string name="lblSpeedThreshold">Speed Threshold:</string>
+    <string name="lblSpeedThresholdNote.l1">Tip: Shake a bit,I love it.</string>
+    <string name="lblSpeedThresholdNote.l2">Tip: Shake</string>
+    <string name="lblSpeedThresholdNote.l3">Tip: Shake hard and hold your phone,don\'t drop it</string>
+    <string name="lblSetting">Setting</string>
+    <string name="lblService">Service</string>
+    <string name="lblServiceInfo">Using the following Start/Stop button to start/stop the service so that the app can run in background. The service will be started automatically when the app started.You can stop the service to disable it if you do NOT want use it sometimes.</string>
+    <string name="about.title">About</string>
+    <string name="about.version">Version: V3.0</string>
+    <string name="about.auth">Author:lingpiao.kong@gmail.com</string>
+    <string name="about.lblAppDesc">SKFairy is used to automatically answer your incoming call by shaking your phone,so that you can handle your call in one hand,it is useful especially when you have a phone with a large screen. It also monitors the Proximity sensor to avoid the wrong automatic answering of incoming call when your phone is pocketed. So please make sure that the Proximity sensor NOT be covered while shaking the phone when you want to use it to answer the incoming call.</string>
+    <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
+    <string name="config.AutoStart">AutoStart</string>
+    <string name="widget.locker">Lock the device</string>
+
+</resources>
