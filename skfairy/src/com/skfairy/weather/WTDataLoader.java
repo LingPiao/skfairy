@@ -1,7 +1,5 @@
 package com.skfairy.weather;
 
-import java.io.UnsupportedEncodingException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -46,6 +44,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		String info = "Nothing get";
 		HttpResponse httpResponse;
 		boolean loaded = false;
+		CityWeather cw = null;
 		try {
 			httpResponse = client.execute(request);
 
@@ -58,23 +57,15 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			// results ->weather_data[]
 
 			JSONArray results = response.getJSONArray("results");
-			for (int k = 0; k < results.length(); k++) {
+			for (int k = 0; k < results.length();) {
 				JSONObject r = results.getJSONObject(k);
+				String city = r.getString("currentCity");
+				cw = new CityWeather(city);
 				JSONArray data = r.getJSONArray("weather_data");
-				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < data.length(); i++) {
-					JSONObject d = data.getJSONObject(i);
-					String dt = toUTF8(d.getString("date"));
-					String wt = toUTF8(d.getString("weather"));
-					String wd = toUTF8(d.getString("wind"));
-					String t = toUTF8(d.getString("temperature"));
-					sb.append(dt).append(",");
-					sb.append(wt).append(",");
-					sb.append(wd).append(",");
-					sb.append(t).append(",\n");
+					cw.addWeatherInfo(WeatherInfo.build(data.getJSONObject(i)));
 				}
 				// Only get the first result
-				info = sb.toString();
 				loaded = true;
 				break;
 			}
@@ -85,17 +76,11 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 
 		SkLog.d("==============loadWeatherInfo:" + info);
 		if (loaded) {
-			remoteViews.setTextViewText(R.id.weatherInfo, info);
+			remoteViews.setTextViewText(R.id.weatherInfo, cw.toString());
 			wtWidget.updateWidget(wtContext);
 		} else {
 			Toast.makeText(wtContext, "Get weather info error:" + info, Toast.LENGTH_SHORT).show();
 		}
-	}
-
-	private String toUTF8(String str) throws UnsupportedEncodingException {
-		// return new String(str.getBytes(), "GBK"); //to out put GBK in the
-		// console of Eclipse
-		return new String(str.getBytes(), "UTF-8");
 	}
 
 	@Override
