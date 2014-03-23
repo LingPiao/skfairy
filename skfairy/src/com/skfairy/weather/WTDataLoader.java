@@ -12,22 +12,18 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.RemoteViews;
-import android.widget.Toast;
 
-import com.skfairy.R;
 import com.skfairy.SkLog;
+import com.skfairy.Util;
 
 public class WTDataLoader extends AsyncTask<String, String, String> {
-	private RemoteViews remoteViews = null;
 
 	private static final String BASE = "http://api.map.baidu.com/telematics/v3/weather?location=%E4%B8%8A%E6%B5%B7&output=json&ak=640f3985a6437dad8135dae98d775a09";
 
 	private WTWidgetProvider wtWidget = null;
 	private Context wtContext;
 
-	public WTDataLoader(RemoteViews remoteViews, WTWidgetProvider wt, Context wtContext) {
-		this.remoteViews = remoteViews;
+	public WTDataLoader(WTWidgetProvider wt, Context wtContext) {
 		this.wtWidget = wt;
 		this.wtContext = wtContext;
 	}
@@ -41,7 +37,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		// request.setEntity(se);
 		HttpClient client = new DefaultHttpClient();
 		HttpClientParams.setCookiePolicy(client.getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
-		String info = "Nothing get";
+		String info = "Nothing got";
 		HttpResponse httpResponse;
 		boolean loaded = false;
 		CityWeather cw = null;
@@ -49,18 +45,19 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			httpResponse = client.execute(request);
 
 			String retSrc = EntityUtils.toString(httpResponse.getEntity());
+			SkLog.d("==============Got weather info :" + retSrc);
 			JSONObject response = new JSONObject(retSrc);
 			int error = response.getInt("error");
 			if (error != 0) {
 				info = "Error";
 			}
 			// results ->weather_data[]
-
+			cw = new CityWeather(response.getString("date"));
 			JSONArray results = response.getJSONArray("results");
 			for (int k = 0; k < results.length();) {
 				JSONObject r = results.getJSONObject(k);
 				String city = r.getString("currentCity");
-				cw = new CityWeather(city);
+				cw.setCity(city);
 				JSONArray data = r.getJSONArray("weather_data");
 				for (int i = 0; i < data.length(); i++) {
 					cw.addWeatherInfo(WeatherInfo.build(data.getJSONObject(i)));
@@ -74,12 +71,13 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			info = "Get weather info error:" + e.getLocalizedMessage();
 		}
 
-		SkLog.d("==============loadWeatherInfo:" + info);
 		if (loaded) {
-			remoteViews.setTextViewText(R.id.weatherInfo, cw.toString());
-			wtWidget.updateWidget(wtContext);
+			SkLog.d("==============loadedWeatherInfo:" + info);
+			// remoteViews.setTextViewText(R.id.weatherInfo, cw.toString());
+			wtWidget.updateWidget(wtContext, cw);
 		} else {
-			Toast.makeText(wtContext, "Get weather info error:" + info, Toast.LENGTH_SHORT).show();
+			SkLog.d("==============Get weather info error:" + info);
+			Util.msgBox(wtContext, "Get weather info error:" + info);
 		}
 	}
 

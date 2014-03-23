@@ -9,11 +9,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.skfairy.R;
 import com.skfairy.SkLog;
 import com.skfairy.Switch;
+import com.skfairy.Util;
 
 public class WTWidgetProvider extends AppWidgetProvider {
 
@@ -71,11 +71,11 @@ public class WTWidgetProvider extends AppWidgetProvider {
 		wtIntent.putExtra(WT_WIDGET_ACTION_OPERATOR_KEY, Switch.WEATHER.getValue());
 		PendingIntent wtPi = PendingIntent.getBroadcast(context, Switch.WEATHER.getValue(), wtIntent, 9);
 
-		Toast.makeText(context, context.getString(R.string.widget_weather_loading), Toast.LENGTH_SHORT).show();
 		if (isInternetConnected(context)) {
-			new WTDataLoader(remoteViews, this, context).execute();
+			Util.msgBox(context, R.string.widget_weather_loading);
+			new WTDataLoader(this, context).execute();
 		} else {
-			Toast.makeText(context, context.getString(R.string.widget_weather_no_inet), Toast.LENGTH_SHORT).show();
+			Util.msgBox(context, R.string.widget_weather_no_inet);
 		}
 		remoteViews.setOnClickPendingIntent(R.id.wtWidgetCtn, wtPi);
 	}
@@ -89,6 +89,19 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	public void updateWidget(Context context) {
 		AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
 		appWidgetManger.updateAppWidget(new ComponentName(context, WTWidgetProvider.class), remoteViews);
+	}
+
+	public void updateWidget(Context context, CityWeather cw) {
+
+		remoteViews.setTextViewText(R.id.city, cw.getCity() + ">");
+		remoteViews.setTextViewText(R.id.date, cw.getDate());
+
+		WeatherInfo today = cw.getWeatherInfos().get(0);
+		remoteViews.setTextViewText(R.id.weather, today.getWeather());
+		remoteViews.setTextViewText(R.id.currentTemperatur, today.getTemperature());
+		remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
+
+		updateWidget(context);
 	}
 
 }

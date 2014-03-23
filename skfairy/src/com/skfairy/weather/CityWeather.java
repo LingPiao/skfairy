@@ -5,10 +5,11 @@ import java.util.List;
 
 public class CityWeather {
 	private String city;
+	private String date;
 	private List<WeatherInfo> weatherInfos = new ArrayList<WeatherInfo>();
 
-	public CityWeather(String city) {
-		this.city = city;
+	public CityWeather(String date) {
+		this.date = date;
 	}
 
 	public String getCity() {
@@ -25,6 +26,14 @@ public class CityWeather {
 
 	public void addWeatherInfo(WeatherInfo weatherInfo) {
 		weatherInfos.add(weatherInfo);
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	@Override
