@@ -45,7 +45,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			httpResponse = client.execute(request);
 
 			String retSrc = EntityUtils.toString(httpResponse.getEntity());
-			SkLog.d("==============Got weather info :" + retSrc);
+			//SkLog.d("==============Got weather info :" + retSrc);
 			JSONObject response = new JSONObject(retSrc);
 			int error = response.getInt("error");
 			if (error != 0) {

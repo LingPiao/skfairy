@@ -31,8 +31,8 @@
 
     <ImageView
         android:id="@+id/weatherIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerVertical="true"
         android:src="@drawable/qing" />
 
@@ -62,8 +62,8 @@
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/weather"
         android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/weather"
         android:text="12/5℃" />
 
 </RelativeLayout>
