@@ -1,6 +1,8 @@
 package com.skfairy;
 
+import android.content.Context;
 import android.os.Build;
+import android.widget.Toast;
 
 public class Util {
 
@@ -8,6 +10,14 @@ public class Util {
 
 	public static String getAndroidVer() {
 		return android.os.Build.VERSION.RELEASE;
+	}
+
+	public static void msgBox(Context context, int strId) {
+		msgBox(context, context.getString(strId));
+	}
+
+	public static void msgBox(Context context, String msg) {
+		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 	}
 
 	public static String getPhoneModel() {

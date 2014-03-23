@@ -1,16 +1,69 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wtWidgetCtn"
     android:layout_width="300dp"
-    android:layout_height="wrap_content"
+    android:layout_height="120dp"
     android:background="#40000000" >
 
     <TextView
-        android:id="@+id/weatherInfo"
+        android:id="@+id/city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="30dp"
-        android:padding="5sp"
-        android:text="@string/widget.weather.note" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="City>" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/city"
+        android:text="Qing" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="2014/03/21" />
+
+    <ImageView
+        android:id="@+id/weatherIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/qing" />
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" >
+
+        <include
+            android:id="@+id/day1"
+            layout="@layout/next_day" >
+        </include>
+
+        <include
+            android:id="@+id/day2"
+            layout="@layout/next_day" >
+        </include>
+
+        <include
+            android:id="@+id/day3"
+            layout="@layout/next_day" >
+        </include>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/weather"
+        android:layout_alignParentBottom="true"
+        android:text="12/5℃" />
+
+</RelativeLayout>
