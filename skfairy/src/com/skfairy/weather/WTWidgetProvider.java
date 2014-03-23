@@ -98,7 +98,6 @@ public class WTWidgetProvider extends AppWidgetProvider {
 
 		WeatherInfo today = cw.getWeatherInfos().get(0);
 		remoteViews.setTextViewText(R.id.weather, today.getWeather());
-		remoteViews.setTextViewText(R.id.currentTemperatur, today.getTemperature());
 		remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
 
 		updateWidget(context);
