@@ -94,11 +94,32 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	public void updateWidget(Context context, CityWeather cw) {
 
 		remoteViews.setTextViewText(R.id.city, cw.getCity() + ">");
-		remoteViews.setTextViewText(R.id.date, cw.getDate());
 
 		WeatherInfo today = cw.getWeatherInfos().get(0);
+
+		// Only get mm-dd
+		remoteViews.setTextViewText(R.id.date, cw.getDate().substring(5).replace("-", "/") + "/" + today.getDate().substring(0, today.getDate().indexOf("(")));
 		remoteViews.setTextViewText(R.id.weather, today.getWeather());
 		remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
+		remoteViews.setImageViewResource(R.id.weatherIcon, Util.getTodayIconId(today.getDayIcon()));
+
+		// Next1
+		WeatherInfo d1 = cw.getWeatherInfos().get(1);
+		remoteViews.setTextViewText(R.id.day1, d1.getDate());
+		remoteViews.setTextViewText(R.id.day1Temperature, d1.getTemperature());
+		remoteViews.setImageViewResource(R.id.day1Icon, Util.getDayIconId(d1.getDayIcon()));
+
+		// Next2
+		WeatherInfo d2 = cw.getWeatherInfos().get(2);
+		remoteViews.setTextViewText(R.id.day2, d2.getDate());
+		remoteViews.setTextViewText(R.id.day2Temperature, d2.getTemperature());
+		remoteViews.setImageViewResource(R.id.day2Icon, Util.getDayIconId(d2.getDayIcon()));
+
+		// Next3
+		WeatherInfo d3 = cw.getWeatherInfos().get(3);
+		remoteViews.setTextViewText(R.id.day3, d3.getDate());
+		remoteViews.setTextViewText(R.id.day3Temperature, d3.getTemperature());
+		remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getDayIcon()));
 
 		updateWidget(context);
 	}
