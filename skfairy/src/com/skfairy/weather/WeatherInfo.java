@@ -4,12 +4,15 @@ import java.io.UnsupportedEncodingException;
 
 import org.json.JSONObject;
 
+import com.skfairy.Util;
+
 public class WeatherInfo {
 	private String date;
 	private String weather;
 	private String temperature;
 	private String wind;
-	private String icon;
+	private String dayIcon;
+	private String nightIcon;
 	private boolean loaded = false;
 	private String error;
 
@@ -19,12 +22,18 @@ public class WeatherInfo {
 			wi.setDate(toUTF8(d.getString("date")));
 			wi.setWeather(toUTF8(d.getString("weather")));
 			wi.setWind(toUTF8(d.getString("wind")));
-			wi.setTemperature(toUTF8(d.getString("temperature")));
+			wi.setTemperature(trimTemperature(toUTF8(d.getString("temperature"))));
+			wi.setDayIcon(Util.extactPictureFromUrl(d.getString("dayPictureUrl")));
+			wi.setNightIcon(Util.extactPictureFromUrl(d.getString("nightPictureUrl")));
 		} catch (Exception e) {
 			wi.setError("Get weather info error:" + e.getLocalizedMessage());
 		}
 		wi.setLoaded(true);
 		return wi;
+	}
+
+	private static String trimTemperature(String tmp) {
+		return tmp.replace(" ~ ", "/");
 	}
 
 	private static String toUTF8(String str) throws UnsupportedEncodingException {
@@ -81,12 +90,20 @@ public class WeatherInfo {
 		this.wind = wind;
 	}
 
-	public String getIcon() {
-		return icon;
+	public String getDayIcon() {
+		return dayIcon;
 	}
 
-	public void setIcon(String icon) {
-		this.icon = icon;
+	public void setDayIcon(String dayIcon) {
+		this.dayIcon = dayIcon;
+	}
+
+	public String getNightIcon() {
+		return nightIcon;
+	}
+
+	public void setNightIcon(String nightIcon) {
+		this.nightIcon = nightIcon;
 	}
 
 	@Override
