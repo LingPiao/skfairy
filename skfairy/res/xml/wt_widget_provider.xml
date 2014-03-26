@@ -3,7 +3,7 @@
     android:initialLayout="@layout/wt_widget"
     android:minHeight="80dp"
     android:minWidth="250dp"
-    android:previewImage="@drawable/widget_pre"
+    android:previewImage="@drawable/wt_widget_pre"
     android:updatePeriodMillis="86400000" >
 
 </appwidget-provider>

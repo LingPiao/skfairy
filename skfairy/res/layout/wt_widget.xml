@@ -4,7 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="120dp"
     android:background="#40000000"
-    android:padding="3dp" >
+    android:padding="5dp" >
 
     <TextView
         android:id="@+id/city"
@@ -28,12 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="2014/03/21" />
+        android:text="03/21" />
 
     <ImageView
         android:id="@+id/weatherIcon"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerVertical="true"
         android:paddingLeft="3dp"
         android:src="@drawable/qing" />
@@ -43,14 +43,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/weatherIcon"
-        android:layout_below="@+id/weatherIcon"
-        android:paddingLeft="15dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="90dp"
         android:text="12/5℃" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="180dp"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:paddingLeft="10dp" >
@@ -58,18 +58,21 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/nextDayPadding" >
 
             <TextView
                 android:id="@+id/day1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nxt1" />
+                android:text="Nxt1"
+                android:textSize="@dimen/weekDaySize" />
 
             <ImageView
                 android:id="@+id/day1Icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/nextDayIconSize"
+                android:layout_height="@dimen/nextDayIconSize"
                 android:src="@drawable/dayu" />
 
             <TextView
@@ -80,22 +83,32 @@
                 android:textSize="@dimen/tempSize" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:background="#20FFFFFF"
+            android:paddingLeft="3dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/nextDayleftPadding" >
+            android:padding="@dimen/nextDayPadding" >
 
             <TextView
                 android:id="@+id/day2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nxt2" />
+                android:text="Nxt2"
+                android:textSize="@dimen/weekDaySize" />
 
             <ImageView
                 android:id="@+id/day2Icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/nextDayIconSize"
+                android:layout_height="@dimen/nextDayIconSize"
                 android:src="@drawable/xiaoyu" />
 
             <TextView
@@ -106,22 +119,32 @@
                 android:textSize="@dimen/tempSize" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:background="#20FFFFFF"
+            android:paddingLeft="3dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/nextDayleftPadding" >
+            android:padding="@dimen/nextDayPadding" >
 
             <TextView
                 android:id="@+id/day3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nxt3" />
+                android:text="Nxt3"
+                android:textSize="@dimen/weekDaySize" />
 
             <ImageView
                 android:id="@+id/day3Icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/nextDayIconSize"
+                android:layout_height="@dimen/nextDayIconSize"
                 android:src="@drawable/xiaoyu" />
 
             <TextView

@@ -93,13 +93,12 @@ public class WTWidgetProvider extends AppWidgetProvider {
 
 	public void updateWidget(Context context, CityWeather cw) {
 
-		remoteViews.setTextViewText(R.id.city, cw.getCity() + ">");
+		remoteViews.setTextViewText(R.id.city, cw.getCity());
 
 		WeatherInfo today = cw.getWeatherInfos().get(0);
 
-		// Only get mm-dd
-		remoteViews.setTextViewText(R.id.date, cw.getDate().substring(5).replace("-", "/") + "/" + today.getDate().substring(0, today.getDate().indexOf("(")));
-		remoteViews.setTextViewText(R.id.weather, today.getWeather());
+		remoteViews.setTextViewText(R.id.date, cw.getDate() + Util.SLASH + today.getDate());
+		remoteViews.setTextViewText(R.id.weather, today.getWeather() + Util.BLANK_STRING + today.getWind());
 		remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
 		remoteViews.setImageViewResource(R.id.weatherIcon, Util.getTodayIconId(today.getDayIcon()));
 

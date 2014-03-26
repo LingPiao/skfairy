@@ -7,6 +7,18 @@ import org.json.JSONObject;
 import com.skfairy.Util;
 
 public class WeatherInfo {
+
+	private static final String WIND = "wind";
+	private static final String NIGHT_PICTURE_URL = "nightPictureUrl";
+	private static final String DAY_PICTURE_URL = "dayPictureUrl";
+	private static final String TEMPERATURE = "temperature";
+	private static final String WEATHER = "weather";
+	private static final String DATE_NAME = "date";
+
+	private static final String LEFT_PARENTHESIS = "(";
+	private static final String UTF_8 = "UTF-8";
+	private static final String TEMP_SEPARATOR = " ~ ";
+
 	private String date;
 	private String weather;
 	private String temperature;
@@ -19,12 +31,12 @@ public class WeatherInfo {
 	public static WeatherInfo build(JSONObject d) {
 		WeatherInfo wi = new WeatherInfo();
 		try {
-			wi.setDate(toUTF8(d.getString("date")));
-			wi.setWeather(toUTF8(d.getString("weather")));
-			wi.setWind(toUTF8(d.getString("wind")));
-			wi.setTemperature(trimTemperature(toUTF8(d.getString("temperature"))));
-			wi.setDayIcon(Util.extactPictureFromUrl(d.getString("dayPictureUrl")));
-			wi.setNightIcon(Util.extactPictureFromUrl(d.getString("nightPictureUrl")));
+			wi.setDate(getWeekDay(toUTF8(d.getString(DATE_NAME))));
+			wi.setWeather(toUTF8(d.getString(WEATHER)));
+			wi.setWind(toUTF8(d.getString(WIND)));
+			wi.setTemperature(trimTemperature(toUTF8(d.getString(TEMPERATURE))));
+			wi.setDayIcon(Util.extactPictureFromUrl(d.getString(DAY_PICTURE_URL)));
+			wi.setNightIcon(Util.extactPictureFromUrl(d.getString(NIGHT_PICTURE_URL)));
 		} catch (Exception e) {
 			wi.setError("Get weather info error:" + e.getLocalizedMessage());
 		}
@@ -33,13 +45,23 @@ public class WeatherInfo {
 	}
 
 	private static String trimTemperature(String tmp) {
-		return tmp.replace(" ~ ", "/");
+		return tmp.replace(TEMP_SEPARATOR, Util.SLASH);
+	}
+
+	private static String getWeekDay(String dateStr) {
+		if (dateStr == null)
+			return null;
+		int i = dateStr.indexOf(LEFT_PARENTHESIS);
+		if (i > 0) {
+			return dateStr.substring(0, i);
+		}
+		return dateStr;
 	}
 
 	private static String toUTF8(String str) throws UnsupportedEncodingException {
 		// return new String(str.getBytes(), "GBK"); //to out put GBK in the
 		// console of Eclipse
-		return new String(str.getBytes(), "UTF-8");
+		return new String(str.getBytes(), UTF_8);
 	}
 
 	public String getError() {
