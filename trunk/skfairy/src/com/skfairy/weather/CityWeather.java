@@ -3,6 +3,8 @@ package com.skfairy.weather;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.skfairy.Util;
+
 public class CityWeather {
 	private String city;
 	private String date;
@@ -29,7 +31,11 @@ public class CityWeather {
 	}
 
 	public String getDate() {
-		return date;
+		if (date == null) {
+			return "";
+		}
+		// yyyy-mm-dd, Only get mm/dd
+		return date.substring(5).replace(Util.DATE_SEPARATOR, Util.SLASH);
 	}
 
 	public void setDate(String date) {

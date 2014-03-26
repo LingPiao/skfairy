@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 public class Util {
 
+	public static final String BLANK_STRING = " ";
+	public static final String EMPTY_STRING = "";
+	public static final String SLASH = "/";
+	public static final String DATE_SEPARATOR = "-";
 	private static final String V411 = "4.1.1";
 	private static Map<String, Integer> dayIcons = new HashMap<String, Integer>();
 	private static Map<String, Integer> nightIcons = new HashMap<String, Integer>();
@@ -19,7 +23,7 @@ public class Util {
 		dayIcons.put("xiaoyu.png", R.drawable.xiaoyu);
 		dayIcons.put("dayu.png", R.drawable.dayu);
 		dayIcons.put("zhongyu.png", R.drawable.zhongyu);
-		dayIcons.put("zhengyu.png", R.drawable.zhengyu);
+		dayIcons.put("zhenyu.png", R.drawable.zhenyu);
 
 		dayIcons.put("xiaoxue.png", R.drawable.xiaoxue);
 		dayIcons.put("daxue.png", R.drawable.daxue);
@@ -65,7 +69,7 @@ public class Util {
 		if (model.startsWith(manufacturer)) {
 			return capitalize(model);
 		} else {
-			return capitalize(manufacturer) + " " + model;
+			return capitalize(manufacturer) + BLANK_STRING + model;
 		}
 	}
 
@@ -81,7 +85,7 @@ public class Util {
 
 	private static String capitalize(String s) {
 		if (s == null || s.length() == 0) {
-			return "";
+			return EMPTY_STRING;
 		}
 		char first = s.charAt(0);
 		if (Character.isUpperCase(first)) {
@@ -92,10 +96,10 @@ public class Util {
 	}
 
 	public static String extactPictureFromUrl(String url) {
-		if (url == null || url.trim() == "") {
+		if (url == null || url.trim() == EMPTY_STRING) {
 			return null;
 		}
-		return url.substring(url.lastIndexOf("/") + 1);
+		return url.substring(url.lastIndexOf(SLASH) + 1);
 	}
 
 	public static int getDayIconId(String weatherPic) {

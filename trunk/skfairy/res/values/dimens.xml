@@ -4,6 +4,8 @@
     <dimen name="activity_horizontal_margin">10dp</dimen>
     <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="tempSize">12dp</dimen>
-    <dimen name="nextDayleftPadding">5dp</dimen>
+    <dimen name="weekDaySize">10dp</dimen>
+    <dimen name="nextDayPadding">4dp</dimen>
+    <dimen name="nextDayIconSize">50dp</dimen>
 
 </resources>
