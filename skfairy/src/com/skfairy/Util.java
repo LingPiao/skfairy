@@ -103,6 +103,7 @@ public class Util {
 	}
 
 	public static int getDayIconId(String weatherPic) {
+		SkLog.d("getDayIconId:" + weatherPic);
 		Integer p = dayIcons.get(weatherPic);
 		if (p == null) {
 			return R.drawable.na;
@@ -110,12 +111,17 @@ public class Util {
 		return p.intValue();
 	}
 
+	// final String encodedURL = URLEncoder.encode(urlAsString, "UTF-8");
+
 	public static int getTodayIconId(String weatherPic) {
 		Time now = new Time();
+		now.setToNow();
 		Integer p = null;
-		if (now.hour > 19 && now.hour < 4) {
+		SkLog.d("==============now.hour:" + now.hour);
+		if (now.hour >= 19 || now.hour < 4) {
 			p = nightIcons.get(weatherPic);
-		} else {
+		}
+		if (p == null) {
 			p = dayIcons.get(weatherPic);
 		}
 		if (p == null) {
