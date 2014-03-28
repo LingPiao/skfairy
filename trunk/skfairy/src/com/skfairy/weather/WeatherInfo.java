@@ -4,16 +4,22 @@ import java.io.UnsupportedEncodingException;
 
 import org.json.JSONObject;
 
+import com.skfairy.SkLog;
 import com.skfairy.Util;
 
 public class WeatherInfo {
+
+	public static final String DATE_NAME = "date";
+	public static final String RESULTS = "results";
+	public static final String CURRENT_CITY = "currentCity";
+	public static final String WEATHER_DATA = "weather_data";
+	public static final String ERROR = "error";
 
 	private static final String WIND = "wind";
 	private static final String NIGHT_PICTURE_URL = "nightPictureUrl";
 	private static final String DAY_PICTURE_URL = "dayPictureUrl";
 	private static final String TEMPERATURE = "temperature";
 	private static final String WEATHER = "weather";
-	private static final String DATE_NAME = "date";
 
 	private static final String LEFT_PARENTHESIS = "(";
 	private static final String UTF_8 = "UTF-8";
@@ -32,9 +38,10 @@ public class WeatherInfo {
 		WeatherInfo wi = new WeatherInfo();
 		try {
 			wi.setDate(getWeekDay(toUTF8(d.getString(DATE_NAME))));
-			wi.setWeather(toUTF8(d.getString(WEATHER)));
+			wi.setWeather(truncateWeatherInfo(toUTF8(d.getString(WEATHER))));
 			wi.setWind(toUTF8(d.getString(WIND)));
 			wi.setTemperature(trimTemperature(toUTF8(d.getString(TEMPERATURE))));
+			SkLog.d("===============d.getString(DAY_PICTURE_URL:)" + Util.extactPictureFromUrl(d.getString(DAY_PICTURE_URL)));
 			wi.setDayIcon(Util.extactPictureFromUrl(d.getString(DAY_PICTURE_URL)));
 			wi.setNightIcon(Util.extactPictureFromUrl(d.getString(NIGHT_PICTURE_URL)));
 		} catch (Exception e) {
@@ -42,6 +49,13 @@ public class WeatherInfo {
 		}
 		wi.setLoaded(true);
 		return wi;
+	}
+
+	private static String truncateWeatherInfo(String weatherInfo) {
+		if (weatherInfo == null) {
+			return null;
+		}
+		return weatherInfo.substring(0, weatherInfo.indexOf("转"));
 	}
 
 	private static String trimTemperature(String tmp) {

@@ -1,5 +1,7 @@
 package com.skfairy.weather;
 
+import java.util.Map;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -8,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.skfairy.R;
@@ -20,6 +23,7 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	private static final String WT_WIDGET_ACTION_CLICK = "android.sk.widget.wt.action.click";
 	private static final String WT_WIDGET_ACTION_OPERATOR_KEY = "WT_WIDGET_ACTION_OPERATOR_KEY";
 	private RemoteViews remoteViews = null;
+	private WTDataLoader dataLoader = null;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -57,11 +61,27 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		String act = intent.getAction();
 		SkLog.d("==============WTWidgetProvider.onReceive,action=" + act);
+		if (dataLoader == null) {
+			dataLoader = new WTDataLoader(this, context);
+		}
+		int operator = 0;
 		if (act.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) || act.equals(WT_WIDGET_ACTION_CLICK)) {
 			if (remoteViews == null) {
 				remoteViews = new RemoteViews(context.getPackageName(), R.layout.wt_widget);
 			}
-			updateStatus(context);
+			Bundle bundle = intent.getExtras();
+
+			if (bundle != null) {
+				operator = bundle.getInt(Switch.SWTICH_CITY.name(), 0);
+			} else {
+				SkLog.d("==============bundle is null");
+			}
+			SkLog.d("==============WTWidgetProvider.onReceive,operator=" + operator);
+			if (operator == Switch.SWTICH_CITY.getValue()) {
+				switchCity(context);
+			} else {
+				updateStatus(context);
+			}
 		}
 	}
 
@@ -73,7 +93,7 @@ public class WTWidgetProvider extends AppWidgetProvider {
 
 		if (isInternetConnected(context)) {
 			Util.msgBox(context, R.string.widget_weather_loading);
-			new WTDataLoader(this, context).execute();
+			dataLoader.execute();
 		} else {
 			Util.msgBox(context, R.string.widget_weather_no_inet);
 		}
@@ -91,9 +111,22 @@ public class WTWidgetProvider extends AppWidgetProvider {
 		appWidgetManger.updateAppWidget(new ComponentName(context, WTWidgetProvider.class), remoteViews);
 	}
 
-	public void updateWidget(Context context, CityWeather cw) {
+	public void updateWeatherInfo(Context context) {
+		Map<String, CityWeather> wis = WeatherCache.getInstance().getCachedWeatherInfos();
+		if (wis.isEmpty()) {
+			return;
+		}
+		CityWeather cw = wis.get(WTDataLoader.cities[WeatherCache.getInstance().getCurrentCityIndex()]);
+		updateWeatherInfo(context, cw);
+	}
+
+	private void updateWeatherInfo(Context context, CityWeather cw) {
 
 		remoteViews.setTextViewText(R.id.city, cw.getCity());
+		Intent wtIntent = new Intent(WT_WIDGET_ACTION_CLICK);
+		wtIntent.putExtra(Switch.SWTICH_CITY.name(), Switch.SWTICH_CITY.getValue());
+		PendingIntent swCityPi = PendingIntent.getBroadcast(context, Switch.SWTICH_CITY.getValue(), wtIntent, 9);
+		remoteViews.setOnClickPendingIntent(R.id.city, swCityPi);
 
 		WeatherInfo today = cw.getWeatherInfos().get(0);
 
@@ -118,9 +151,22 @@ public class WTWidgetProvider extends AppWidgetProvider {
 		WeatherInfo d3 = cw.getWeatherInfos().get(3);
 		remoteViews.setTextViewText(R.id.day3, d3.getDate());
 		remoteViews.setTextViewText(R.id.day3Temperature, d3.getTemperature());
+		SkLog.d("=============================d3.getDayIcon():" + d3.getDayIcon());
 		remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getDayIcon()));
 
 		updateWidget(context);
+	}
+
+	private void switchCity(Context context) {
+		int currentCityIndex = WeatherCache.getInstance().getCurrentCityIndex();
+		int max = WeatherCache.getInstance().getCachedWeatherInfos().size() - 1;
+		if (max < 1)
+			return;
+		if (++currentCityIndex > max) {
+			currentCityIndex = 0;
+		}
+		WeatherCache.getInstance().setCurrentCityIndex(currentCityIndex);
+		updateWeatherInfo(context);
 	}
 
 }

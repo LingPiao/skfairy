@@ -4,6 +4,6 @@
     android:minHeight="80dp"
     android:minWidth="250dp"
     android:previewImage="@drawable/wt_widget_pre"
-    android:updatePeriodMillis="86400000" >
+    android:updatePeriodMillis="0" >
 
 </appwidget-provider>
