@@ -1,12 +1,10 @@
 package com.skfairy.weather;
 
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -54,8 +52,9 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		client = new DefaultHttpClient(httpParameters);
 
 		// We have to set a proxy manually for the test sometimes
-		HttpHost proxy = new HttpHost("web-proxy.jpn.hp.com", 8080);
-		client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		// HttpHost proxy = new HttpHost("web-proxy.jpn.hp.com", 8080);
+		// client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+		// proxy);
 
 		HttpClientParams.setCookiePolicy(client.getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
 	}
@@ -120,6 +119,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		}
 		if (loaded) {
 			wtWidget.updateWeatherInfo(wtContext);
+			WeatherCache.getInstance().setLastLoaded();
 		}
 
 		return null;

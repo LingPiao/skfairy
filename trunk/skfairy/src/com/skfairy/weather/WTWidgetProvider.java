@@ -91,11 +91,13 @@ public class WTWidgetProvider extends AppWidgetProvider {
 		wtIntent.putExtra(WT_WIDGET_ACTION_OPERATOR_KEY, Switch.WEATHER.getValue());
 		PendingIntent wtPi = PendingIntent.getBroadcast(context, Switch.WEATHER.getValue(), wtIntent, 9);
 
-		if (isInternetConnected(context)) {
-			Util.msgBox(context, R.string.widget_weather_loading);
-			dataLoader.execute();
-		} else {
-			Util.msgBox(context, R.string.widget_weather_no_inet);
+		if (WeatherCache.getInstance().isUpdateRequired()) {
+			if (isInternetConnected(context)) {
+				Util.msgBox(context, R.string.widget_weather_loading);
+				dataLoader.execute();
+			} else {
+				Util.msgBox(context, R.string.widget_weather_no_inet);
+			}
 		}
 		remoteViews.setOnClickPendingIntent(R.id.wtWidgetCtn, wtPi);
 	}
@@ -123,10 +125,6 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	private void updateWeatherInfo(Context context, CityWeather cw) {
 
 		remoteViews.setTextViewText(R.id.city, cw.getCity());
-		Intent wtIntent = new Intent(WT_WIDGET_ACTION_CLICK);
-		wtIntent.putExtra(Switch.SWTICH_CITY.name(), Switch.SWTICH_CITY.getValue());
-		PendingIntent swCityPi = PendingIntent.getBroadcast(context, Switch.SWTICH_CITY.getValue(), wtIntent, 9);
-		remoteViews.setOnClickPendingIntent(R.id.city, swCityPi);
 
 		WeatherInfo today = cw.getWeatherInfos().get(0);
 
@@ -151,10 +149,19 @@ public class WTWidgetProvider extends AppWidgetProvider {
 		WeatherInfo d3 = cw.getWeatherInfos().get(3);
 		remoteViews.setTextViewText(R.id.day3, d3.getDate());
 		remoteViews.setTextViewText(R.id.day3Temperature, d3.getTemperature());
-		SkLog.d("=============================d3.getDayIcon():" + d3.getDayIcon());
 		remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getDayIcon()));
 
+		setOnClick(context);
+
 		updateWidget(context);
+	}
+
+	private void setOnClick(Context context) {
+		Intent wtIntent = new Intent(WT_WIDGET_ACTION_CLICK);
+		wtIntent.putExtra(Switch.SWTICH_CITY.name(), Switch.SWTICH_CITY.getValue());
+		PendingIntent swCityPi = PendingIntent.getBroadcast(context, Switch.SWTICH_CITY.getValue(), wtIntent, 9);
+		remoteViews.setOnClickPendingIntent(R.id.city, swCityPi);
+		remoteViews.setOnClickPendingIntent(R.id.weatherIcon, swCityPi);
 	}
 
 	private void switchCity(Context context) {

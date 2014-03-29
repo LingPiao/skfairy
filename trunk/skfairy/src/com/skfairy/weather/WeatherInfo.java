@@ -41,11 +41,10 @@ public class WeatherInfo {
 			wi.setWeather(truncateWeatherInfo(toUTF8(d.getString(WEATHER))));
 			wi.setWind(toUTF8(d.getString(WIND)));
 			wi.setTemperature(trimTemperature(toUTF8(d.getString(TEMPERATURE))));
-			SkLog.d("===============d.getString(DAY_PICTURE_URL:)" + Util.extactPictureFromUrl(d.getString(DAY_PICTURE_URL)));
 			wi.setDayIcon(Util.extactPictureFromUrl(d.getString(DAY_PICTURE_URL)));
 			wi.setNightIcon(Util.extactPictureFromUrl(d.getString(NIGHT_PICTURE_URL)));
 		} catch (Exception e) {
-			wi.setError("Get weather info error:" + e.getLocalizedMessage());
+			SkLog.v("Get weather info error:" + e.getLocalizedMessage());
 		}
 		wi.setLoaded(true);
 		return wi;
@@ -55,7 +54,10 @@ public class WeatherInfo {
 		if (weatherInfo == null) {
 			return null;
 		}
-		return weatherInfo.substring(0, weatherInfo.indexOf("转"));
+		int i = weatherInfo.indexOf("转");
+		if (i > 0)
+			return weatherInfo.substring(0, i);
+		return weatherInfo;
 	}
 
 	private static String trimTemperature(String tmp) {
