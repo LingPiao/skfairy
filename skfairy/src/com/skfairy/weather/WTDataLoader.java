@@ -37,6 +37,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 	private WTWidgetProvider wtWidget = null;
 	private Context wtContext;
 	private HttpClient client = null;
+	private String errorMsg = "";
 
 	public WTDataLoader(WTWidgetProvider wt, Context wtContext) {
 		this.wtWidget = wt;
@@ -102,8 +103,9 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			// SkLog.d("==============loadedWeatherInfo:" + info);
 			WeatherCache.getInstance().addCache(cityName, cw);
 		} else {
-			SkLog.d("==============Get weather info error:" + info);
-			Util.msgBox(wtContext, "Get weather info error:" + info);
+			SkLog.w("==============Get weather info error:" + info);
+			errorMsg = info;
+
 		}
 		return loaded;
 	}
@@ -113,6 +115,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		// SkLog.d("==============WTDataLoader.doInBackground");
 		boolean loaded = false;
 		boolean l = false;
+		errorMsg = "";
 		for (String c : cities) {
 			l = loadWeatherInfo(c);
 			loaded = loaded || l;
@@ -120,6 +123,9 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		if (loaded) {
 			wtWidget.updateWeatherInfo(wtContext);
 			WeatherCache.getInstance().setLastLoaded();
+		} else {
+			if (errorMsg.length() > 1)
+				Util.msgBox(wtContext, errorMsg);
 		}
 
 		return null;
