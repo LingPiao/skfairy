@@ -129,7 +129,9 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	}
 
 	private void updateWeatherInfo(Context context, CityWeather cw) {
-
+		if (remoteViews == null) {
+			remoteViews = new RemoteViews(context.getPackageName(), R.layout.wt_widget);
+		}
 		remoteViews.setTextViewText(R.id.city, cw.getCity());
 
 		WeatherInfo today = cw.getWeatherInfos().get(0);
