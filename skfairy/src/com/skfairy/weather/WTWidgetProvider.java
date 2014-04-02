@@ -129,6 +129,9 @@ public class WTWidgetProvider extends AppWidgetProvider {
 	}
 
 	private void updateWeatherInfo(Context context, CityWeather cw) {
+		if (cw == null) {
+			return;
+		}
 		if (remoteViews == null) {
 			remoteViews = new RemoteViews(context.getPackageName(), R.layout.wt_widget);
 		}
