@@ -94,7 +94,6 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			info = "Get weather info error:" + e.getLocalizedMessage();
 		}
 
@@ -104,7 +103,6 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		} else {
 			SkLog.w("==============Get weather info error:" + info);
 			errorMsg = info;
-
 		}
 		return loaded;
 	}
