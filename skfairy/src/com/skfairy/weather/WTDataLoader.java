@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Looper;
 
 import com.skfairy.SkLog;
 import com.skfairy.Util;
@@ -122,8 +123,11 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			wtWidget.updateWeatherInfo(wtContext);
 			WeatherCache.getInstance().setLastLoaded();
 		} else {
-			if (errorMsg.length() > 1)
+			if (errorMsg.length() > 1) {
+				Looper.prepare();
 				Util.msgBox(wtContext, errorMsg);
+				Looper.loop();
+			}
 		}
 		WeatherCache.getInstance().setLoading(false);
 		return null;
