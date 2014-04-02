@@ -87,9 +87,10 @@ public class WTWidgetProvider extends AppWidgetProvider {
 
 	private void weatherWidgetClick(Context context) {
 		SkLog.d("==============WTWidgetProvider.weatherWidgetClick");
-		Intent wtIntent = new Intent(WT_WIDGET_ACTION_CLICK);
-		wtIntent.putExtra(WT_WIDGET_ACTION_OPERATOR_KEY, Switch.WEATHER.getValue());
-		PendingIntent wtPi = PendingIntent.getBroadcast(context, Switch.WEATHER.getValue(), wtIntent, 9);
+		if (WeatherCache.getInstance().isLoading()) {
+			SkLog.d("==============WTWidgetProvider is loading weather data...");
+			return;
+		}
 
 		if (WeatherCache.getInstance().isUpdateRequired()) {
 			if (isInternetConnected(context)) {
@@ -99,6 +100,11 @@ public class WTWidgetProvider extends AppWidgetProvider {
 				Util.msgBox(context, R.string.widget_weather_no_inet);
 			}
 		}
+
+		Intent wtIntent = new Intent(WT_WIDGET_ACTION_CLICK);
+		wtIntent.putExtra(WT_WIDGET_ACTION_OPERATOR_KEY, Switch.WEATHER.getValue());
+		PendingIntent wtPi = PendingIntent.getBroadcast(context, Switch.WEATHER.getValue(), wtIntent, 9);
+
 		remoteViews.setOnClickPendingIntent(R.id.wtWidgetCtn, wtPi);
 	}
 

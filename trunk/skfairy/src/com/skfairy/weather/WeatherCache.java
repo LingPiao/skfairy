@@ -3,13 +3,16 @@ package com.skfairy.weather;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.skfairy.SkLog;
+
 public class WeatherCache {
 
 	private int currentCityIndex = 0;
 
 	private long lastLoaded = 0;
-	// 2minutes
-	private final static long PERIOD = 120000;
+	// 1minute
+	private final static long PERIOD = 40000;
+	private boolean isLoading = false;
 
 	private static WeatherCache instance = null;
 	private Map<String, CityWeather> cache = new HashMap<String, CityWeather>();
@@ -41,11 +44,21 @@ public class WeatherCache {
 		this.currentCityIndex = currentCityIndex;
 	}
 
+	public boolean isLoading() {
+		return isLoading;
+	}
+
+	public void setLoading(boolean isLoading) {
+		this.isLoading = isLoading;
+	}
+
 	public boolean isUpdateRequired() {
 		long now = System.currentTimeMillis();
-		if (now - lastLoaded > PERIOD) {
+		long diff = now - lastLoaded;
+		if (diff > PERIOD) {
 			return true;
 		}
+		SkLog.d("WeatherCache is not required to update, now-lastLoaded=" + diff);
 		return false;
 	}
 
