@@ -70,7 +70,6 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		CityWeather cw = null;
 		try {
 			httpResponse = client.execute(request);
-
 			String retSrc = EntityUtils.toString(httpResponse.getEntity());
 			// SkLog.d("==============Got weather info :" + retSrc);
 			JSONObject response = new JSONObject(retSrc);
@@ -115,6 +114,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		// SkLog.d("==============WTDataLoader.doInBackground");
 		boolean loaded = false;
 		boolean l = false;
+		WeatherCache.getInstance().setLoading(true);
 		errorMsg = "";
 		for (String c : cities) {
 			l = loadWeatherInfo(c);
@@ -127,7 +127,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			if (errorMsg.length() > 1)
 				Util.msgBox(wtContext, errorMsg);
 		}
-
+		WeatherCache.getInstance().setLoading(false);
 		return null;
 	}
 
