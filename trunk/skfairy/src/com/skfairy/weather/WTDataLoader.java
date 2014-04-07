@@ -129,6 +129,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 				Looper.loop();
 			}
 		}
+		WeatherCache.getInstance().setLastLoadingSuccessful(loaded);
 		WeatherCache.getInstance().setLoading(false);
 		return null;
 	}

@@ -13,6 +13,7 @@ public class WeatherCache {
 	// 1minute
 	private final static long PERIOD = 40000;
 	private boolean isLoading = false;
+	private boolean isLastLoadingSuccessful = false;
 
 	private static WeatherCache instance = null;
 	private Map<String, CityWeather> cache = new HashMap<String, CityWeather>();
@@ -52,7 +53,14 @@ public class WeatherCache {
 		this.isLoading = isLoading;
 	}
 
+	public void setLastLoadingSuccessful(boolean isLastLoadingSuccessful) {
+		this.isLastLoadingSuccessful = isLastLoadingSuccessful;
+	}
+
 	public boolean isUpdateRequired() {
+		if (!isLastLoadingSuccessful) {
+			return true;
+		}
 		long now = System.currentTimeMillis();
 		long diff = now - lastLoaded;
 		if (diff > PERIOD) {
