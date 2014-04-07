@@ -121,46 +121,40 @@ public class WTWidgetProvider extends AppWidgetProvider {
 
 	public void updateWeatherInfo(Context context) {
 		Map<String, CityWeather> wis = WeatherCache.getInstance().getCachedWeatherInfos();
-		if (wis.isEmpty()) {
-			return;
-		}
 		CityWeather cw = wis.get(WTDataLoader.cities[WeatherCache.getInstance().getCurrentCityIndex()]);
 		updateWeatherInfo(context, cw);
 	}
 
 	private void updateWeatherInfo(Context context, CityWeather cw) {
-		if (cw == null) {
-			return;
+		if (cw != null) {
+			remoteViews.setTextViewText(R.id.city, cw.getCity());
+
+			WeatherInfo today = cw.getWeatherInfos().get(0);
+
+			remoteViews.setTextViewText(R.id.date, cw.getDate() + Util.SLASH + today.getDate());
+			remoteViews.setTextViewText(R.id.weather, today.getWeather() + Util.BLANK_STRING + today.getWind());
+			remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
+			remoteViews.setImageViewResource(R.id.weatherIcon, Util.getTodayIconId(today.getDayIcon()));
+
+			// Next1
+			WeatherInfo d1 = cw.getWeatherInfos().get(1);
+			remoteViews.setTextViewText(R.id.day1, d1.getDate());
+			remoteViews.setTextViewText(R.id.day1Temperature, d1.getTemperature());
+			remoteViews.setImageViewResource(R.id.day1Icon, Util.getDayIconId(d1.getDayIcon()));
+
+			// Next2
+			WeatherInfo d2 = cw.getWeatherInfos().get(2);
+			remoteViews.setTextViewText(R.id.day2, d2.getDate());
+			remoteViews.setTextViewText(R.id.day2Temperature, d2.getTemperature());
+			remoteViews.setImageViewResource(R.id.day2Icon, Util.getDayIconId(d2.getDayIcon()));
+
+			// Next3
+			WeatherInfo d3 = cw.getWeatherInfos().get(3);
+			remoteViews.setTextViewText(R.id.day3, d3.getDate());
+			remoteViews.setTextViewText(R.id.day3Temperature, d3.getTemperature());
+			remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getDayIcon()));
 		}
-		remoteViews.setTextViewText(R.id.city, cw.getCity());
-
-		WeatherInfo today = cw.getWeatherInfos().get(0);
-
-		remoteViews.setTextViewText(R.id.date, cw.getDate() + Util.SLASH + today.getDate());
-		remoteViews.setTextViewText(R.id.weather, today.getWeather() + Util.BLANK_STRING + today.getWind());
-		remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
-		remoteViews.setImageViewResource(R.id.weatherIcon, Util.getTodayIconId(today.getDayIcon()));
-
-		// Next1
-		WeatherInfo d1 = cw.getWeatherInfos().get(1);
-		remoteViews.setTextViewText(R.id.day1, d1.getDate());
-		remoteViews.setTextViewText(R.id.day1Temperature, d1.getTemperature());
-		remoteViews.setImageViewResource(R.id.day1Icon, Util.getDayIconId(d1.getDayIcon()));
-
-		// Next2
-		WeatherInfo d2 = cw.getWeatherInfos().get(2);
-		remoteViews.setTextViewText(R.id.day2, d2.getDate());
-		remoteViews.setTextViewText(R.id.day2Temperature, d2.getTemperature());
-		remoteViews.setImageViewResource(R.id.day2Icon, Util.getDayIconId(d2.getDayIcon()));
-
-		// Next3
-		WeatherInfo d3 = cw.getWeatherInfos().get(3);
-		remoteViews.setTextViewText(R.id.day3, d3.getDate());
-		remoteViews.setTextViewText(R.id.day3Temperature, d3.getTemperature());
-		remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getDayIcon()));
-
 		setOnClick(context);
-
 		updateWidget(context);
 	}
 
