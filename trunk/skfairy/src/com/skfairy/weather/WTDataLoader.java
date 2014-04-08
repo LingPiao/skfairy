@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.Looper;
 
 import com.skfairy.SkLog;
@@ -112,21 +113,26 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 	protected String doInBackground(String... arg0) {
 		// SkLog.d("==============WTDataLoader.doInBackground");
 		boolean loaded = false;
-		boolean l = false;
 		WeatherCache.getInstance().setLoading(true);
 		errorMsg = "";
 		for (String c : cities) {
-			l = loadWeatherInfo(c);
-			loaded = loaded || l;
+			loaded = loadWeatherInfo(c);
+			if (!loaded)
+				break;
 		}
 		if (loaded) {
 			wtWidget.updateWeatherInfo(wtContext);
 			WeatherCache.getInstance().setLastLoaded();
 		} else {
 			if (errorMsg.length() > 1) {
-				Looper.prepare();
-				Util.msgBox(wtContext, errorMsg);
-				Looper.loop();
+				SkLog.d("============== doInBackground: showing error message");
+				Handler h = new Handler(Looper.getMainLooper());
+				h.post(new Runnable() {
+					@Override
+					public void run() {
+						Util.msgBoxLong(wtContext, errorMsg);
+					}
+				});
 			}
 		}
 		WeatherCache.getInstance().setLastLoadingSuccessful(loaded);

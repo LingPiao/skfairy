@@ -59,6 +59,10 @@ public class Util {
 		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 	}
 
+	public static void msgBoxLong(Context context, String msg) {
+		Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+	}
+
 	public static String getPhoneModel() {
 		return android.os.Build.MODEL;
 	}
@@ -103,7 +107,6 @@ public class Util {
 	}
 
 	public static int getDayIconId(String weatherPic) {
-		SkLog.d("getDayIconId:" + weatherPic);
 		Integer p = dayIcons.get(weatherPic);
 		if (p == null) {
 			return R.drawable.na;
@@ -117,7 +120,6 @@ public class Util {
 		Time now = new Time();
 		now.setToNow();
 		Integer p = null;
-		SkLog.d("==============now.hour:" + now.hour);
 		if (now.hour >= 19 || now.hour < 4) {
 			p = nightIcons.get(weatherPic);
 		}
