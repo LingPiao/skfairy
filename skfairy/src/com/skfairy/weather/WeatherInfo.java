@@ -45,6 +45,8 @@ public class WeatherInfo {
 			wi.setNightIcon(Util.extactPictureFromUrl(d.getString(NIGHT_PICTURE_URL)));
 		} catch (Exception e) {
 			SkLog.v("Get weather info error:" + e.getLocalizedMessage());
+			wi.setLoaded(false);
+			return wi;
 		}
 		wi.setLoaded(true);
 		return wi;
