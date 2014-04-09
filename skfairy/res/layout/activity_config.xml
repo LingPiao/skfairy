@@ -134,6 +134,47 @@
             android:layout_toRightOf="@+id/txtSpeedThreshold"
             android:text="@string/config.AutoStart" />
 
+        <TextView
+            android:id="@+id/weather_text"
+            style="@style/AppThemeTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnStartService"
+            android:layout_marginTop="14dp"
+            android:text="@string/widget.weather.config.title"
+            android:textIsSelectable="false" />
+
+        <View
+            android:id="@+id/WeatherSeparator"
+            style="@style/AppThemeSeparator"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/weather_text" />
+
+        <TextView
+            android:id="@+id/cityNote"
+            style="@style/AppThemeDescripion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/WeatherSeparator"
+            android:paddingTop="6dp"
+            android:text="@string/widget.weather.config.lbl.city.note" />
+
+        <TextView
+            android:id="@+id/lblCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/cityNote"
+            android:paddingTop="10dp"
+            android:text="@string/widget.weather.config.lbl.city" />
+
+        <EditText
+            android:id="@+id/city"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cityNote"
+            android:layout_toRightOf="@+id/lblCity"
+            android:paddingTop="6dp" />
     </RelativeLayout>
 
 </ScrollView>

@@ -121,7 +121,7 @@ public class WTWidgetProvider extends AppWidgetProvider {
 
 	public void updateWeatherInfo(Context context) {
 		Map<String, CityWeather> wis = WeatherCache.getInstance().getCachedWeatherInfos();
-		CityWeather cw = wis.get(WTDataLoader.cities[WeatherCache.getInstance().getCurrentCityIndex()]);
+		CityWeather cw = wis.get(dataLoader.getCities()[WeatherCache.getInstance().getCurrentCityIndex()]);
 		updateWeatherInfo(context, cw);
 	}
 
