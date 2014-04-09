@@ -20,8 +20,11 @@
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
     <string name="config.AutoStart">AutoStart</string>
     <string name="widget.locker">Lock the device</string>
-    <string name="widget.weather.loading">Loading...</string>
+    <string name="widget.weather.loading">Loading&#8230;</string>
     <string name="widget.weather.note">Click to get the weather info after Internet connected</string>
     <string name="widget.weather.no.inet">Can not get weather info without Internet</string>
+    <string name="widget.weather.config.title">Weather Widget Setting</string>
+    <string name="widget.weather.config.lbl.city">Cities:</string>
+    <string name="widget.weather.config.lbl.city.note">Using comma(,) to separate different cities</string>
 
 </resources>

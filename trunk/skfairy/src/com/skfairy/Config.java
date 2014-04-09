@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +18,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.skfairy.weather.WeatherCache;
 
 /**
  * 
@@ -29,12 +34,15 @@ public class Config extends Activity {
 	public static final String APP_CONFIG_KEY = "SK_FAIRY_CONF";
 	public static final String CONFIG_AUTO_START = "CONFIG_AUTO_START";
 	public static final String CONFIG_SPEED_THRESHOLD = "CONFIG_SPEED_THRESHOLD";
+	public static final String CONFIG_CITY = "CONFIG_CITY";
 
 	private SharedPreferences preferences = null;
 	private Intent sks;
 	private TextView speedNote;
 	private Editor pEditor = null;
-	//private boolean isExit = false;
+	private EditText cities;
+
+	// private boolean isExit = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +110,27 @@ public class Config extends Activity {
 		};
 
 		btnStopService.setOnClickListener(stsLisn);
+
+		cities = (EditText) findViewById(R.id.city);
+		cities.setText(preferences.getString(CONFIG_CITY, ""));
+		TextWatcher cw = new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				pEditor.putString(CONFIG_CITY, cities.getText().toString());
+				pEditor.commit();
+				WeatherCache.getInstance().setCityChanged(true);
+			}
+		};
+
+		cities.addTextChangedListener(cw);
 
 		activeAdmin();
 	}

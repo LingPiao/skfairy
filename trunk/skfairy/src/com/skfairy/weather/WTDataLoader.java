@@ -14,25 +14,25 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.skfairy.Config;
 import com.skfairy.SkLog;
 import com.skfairy.Util;
 
 public class WTDataLoader extends AsyncTask<String, String, String> {
 
-	private static final String CITY_SEPARATOR = " > ";
-	// ShangHai, LuoPing
-	public static final String[] cities = new String[] { "%E4%B8%8A%E6%B5%B7", "%E7%BD%97%E5%B9%B3" };
-
-	// LuoPing
-	// private static final String BASE =
-	// "http://api.map.baidu.com/telematics/v3/weather?location=%E7%BD%97%E5%B9%B3&output=json&ak=640f3985a6437dad8135dae98d775a09";
+	private static final String CITY_APPENDER = " > ";
 	// ShangHai
+	public String[] cities = new String[] { "%E4%B8%8A%E6%B5%B7" };
+
 	private static final String BASE = "http://api.map.baidu.com/telematics/v3/weather?location=";
 	private static final String KEYS = "&output=json&ak=640f3985a6437dad8135dae98d775a09";
+	private static final String CITY_SEPARATOR_ZH = "，";
+	private static final String CITY_SEPARATOR = ",";
 
 	private static final int TIME_OUT = 30000;
 
@@ -40,11 +40,29 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 	private Context wtContext;
 	private HttpClient client = null;
 	private String errorMsg = "";
+	private SharedPreferences preferences = null;
 
 	public WTDataLoader(WTWidgetProvider wt, Context wtContext) {
 		this.wtWidget = wt;
 		this.wtContext = wtContext;
 		initClient();
+		setCities();
+	}
+
+	private void setCities() {
+		preferences = wtContext.getSharedPreferences(Config.APP_CONFIG_KEY, Context.MODE_PRIVATE);
+		String ct = preferences.getString(Config.CONFIG_CITY, "");
+		if (ct != null && ct.trim().length() > 0) {
+			String sp = ct.indexOf(CITY_SEPARATOR_ZH) > 0 ? CITY_SEPARATOR_ZH : CITY_SEPARATOR;
+			cities = ct.split(sp);
+			for (int i = 0; i < cities.length; i++) {
+				cities[i] = Util.encodeURLWithUTF8(cities[i].trim());
+			}
+		}
+	}
+
+	public String[] getCities() {
+		return cities;
 	}
 
 	private void initClient() {
@@ -86,7 +104,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 			for (int k = 0; k < results.length();) {
 				JSONObject r = results.getJSONObject(k);
 				String city = r.getString(WeatherInfo.CURRENT_CITY);
-				cw.setCity(city + CITY_SEPARATOR);
+				cw.setCity(city + CITY_APPENDER);
 				JSONArray data = r.getJSONArray(WeatherInfo.WEATHER_DATA);
 				for (int i = 0; i < data.length(); i++) {
 					cw.addWeatherInfo(WeatherInfo.build(data.getJSONObject(i)));
@@ -114,6 +132,10 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		// SkLog.d("==============WTDataLoader.doInBackground");
 		boolean loaded = false;
 		WeatherCache.getInstance().setLoading(true);
+		if (WeatherCache.getInstance().isCityChanged()) {
+			setCities();
+			WeatherCache.getInstance().setCityChanged(false);
+		}
 		errorMsg = "";
 		for (String c : cities) {
 			loaded = loadWeatherInfo(c);

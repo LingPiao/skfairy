@@ -1,7 +1,5 @@
 package com.skfairy.weather;
 
-import java.io.UnsupportedEncodingException;
-
 import org.json.JSONObject;
 
 import com.skfairy.SkLog;
@@ -22,7 +20,6 @@ public class WeatherInfo {
 	private static final String WEATHER = "weather";
 
 	private static final String LEFT_PARENTHESIS = "(";
-	private static final String UTF_8 = "UTF-8";
 	private static final String TEMP_SEPARATOR = " ~ ";
 
 	private String date;
@@ -37,10 +34,10 @@ public class WeatherInfo {
 	public static WeatherInfo build(JSONObject d) {
 		WeatherInfo wi = new WeatherInfo();
 		try {
-			wi.setDate(getWeekDay(toUTF8(d.getString(DATE_NAME))));
-			wi.setWeather(truncateWeatherInfo(toUTF8(d.getString(WEATHER))));
-			wi.setWind(toUTF8(d.getString(WIND)));
-			wi.setTemperature(trimTemperature(toUTF8(d.getString(TEMPERATURE))));
+			wi.setDate(getWeekDay(Util.toUTF8(d.getString(DATE_NAME))));
+			wi.setWeather(truncateWeatherInfo(Util.toUTF8(d.getString(WEATHER))));
+			wi.setWind(Util.toUTF8(d.getString(WIND)));
+			wi.setTemperature(trimTemperature(Util.toUTF8(d.getString(TEMPERATURE))));
 			wi.setDayIcon(Util.extactPictureFromUrl(d.getString(DAY_PICTURE_URL)));
 			wi.setNightIcon(Util.extactPictureFromUrl(d.getString(NIGHT_PICTURE_URL)));
 		} catch (Exception e) {
@@ -74,12 +71,6 @@ public class WeatherInfo {
 			return dateStr.substring(0, i);
 		}
 		return dateStr;
-	}
-
-	private static String toUTF8(String str) throws UnsupportedEncodingException {
-		// return new String(str.getBytes(), "GBK"); //to out put GBK in the
-		// console of Eclipse
-		return new String(str.getBytes(), UTF_8);
 	}
 
 	public String getError() {

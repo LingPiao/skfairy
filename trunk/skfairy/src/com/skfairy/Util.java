@@ -1,5 +1,7 @@
 package com.skfairy;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public class Util {
 	private static final String V411 = "4.1.1";
 	private static Map<String, Integer> dayIcons = new HashMap<String, Integer>();
 	private static Map<String, Integer> nightIcons = new HashMap<String, Integer>();
+	private static final String UTF_8 = "UTF-8";
 
 	static {
 
@@ -49,6 +52,21 @@ public class Util {
 
 	public static String getAndroidVer() {
 		return android.os.Build.VERSION.RELEASE;
+	}
+
+	public static String toUTF8(String str) throws UnsupportedEncodingException {
+		// return new String(str.getBytes(), "GBK"); //to out put GBK in the
+		// console of Eclipse
+		return new String(str.getBytes(), UTF_8);
+	}
+
+	public static String encodeURLWithUTF8(String str) {
+		try {
+			return URLEncoder.encode(str, UTF_8);
+		} catch (UnsupportedEncodingException e) {
+			SkLog.w("Encoding city exception:" + e.getMessage());
+		}
+		return str;
 	}
 
 	public static void msgBox(Context context, int strId) {
@@ -113,8 +131,6 @@ public class Util {
 		}
 		return p.intValue();
 	}
-
-	// final String encodedURL = URLEncoder.encode(urlAsString, "UTF-8");
 
 	public static int getTodayIconId(String weatherPic) {
 		Time now = new Time();
