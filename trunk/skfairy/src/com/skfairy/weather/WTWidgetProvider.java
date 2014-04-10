@@ -99,6 +99,8 @@ public class WTWidgetProvider extends AppWidgetProvider {
 			} else {
 				Util.msgBox(context, R.string.widget_weather_no_inet);
 			}
+		} else {
+			Util.msgBox(context, R.string.widget_weather_msg_latest);
 		}
 
 		Intent wtIntent = new Intent(WT_WIDGET_ACTION_CLICK);
