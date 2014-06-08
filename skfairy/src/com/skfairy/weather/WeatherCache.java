@@ -80,7 +80,12 @@ public class WeatherCache {
 	}
 
 	public void setCityChanged(boolean isCityChanged) {
+		clearCache();
 		this.isCityChanged = isCityChanged;
+	}
+
+	public void clearCache() {
+		cache.clear();
 	}
 
 }
