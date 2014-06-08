@@ -20,6 +20,7 @@ public class WeatherInfo {
 	private static final String WEATHER = "weather";
 
 	private static final String LEFT_PARENTHESIS = "(";
+	private static final String BLANK = " ";
 	private static final String TEMP_SEPARATOR = " ~ ";
 
 	private String date;
@@ -68,7 +69,12 @@ public class WeatherInfo {
 			return null;
 		int i = dateStr.indexOf(LEFT_PARENTHESIS);
 		if (i > 0) {
-			return dateStr.substring(0, i);
+			String r = dateStr.substring(0, i);
+			i = r.indexOf(BLANK);
+			if (i > 0) {
+				return r.substring(0, i);
+			}
+			return r;
 		}
 		return dateStr;
 	}

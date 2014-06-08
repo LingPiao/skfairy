@@ -25,6 +25,7 @@ public class Util {
 
 		dayIcons.put("xiaoyu.png", R.drawable.xiaoyu);
 		dayIcons.put("dayu.png", R.drawable.dayu);
+		dayIcons.put("baoyu.png", R.drawable.dayu);
 		dayIcons.put("zhongyu.png", R.drawable.zhongyu);
 		dayIcons.put("zhenyu.png", R.drawable.zhenyu);
 
@@ -42,6 +43,7 @@ public class Util {
 		// ======================================================
 		// all the night's pictures are prefixed with nt_
 		nightIcons.put("dayu.png", R.drawable.nt_dayu);
+		nightIcons.put("baoyu.png", R.drawable.nt_dayu);
 		nightIcons.put("duoyun.png", R.drawable.nt_duoyun);
 		nightIcons.put("leidian.png", R.drawable.nt_leidian);
 		nightIcons.put("qing.png", R.drawable.nt_qing);
