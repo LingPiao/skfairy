@@ -30,7 +30,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 	public String[] cities = new String[] { "%E4%B8%8A%E6%B5%B7" };
 
 	private static final String BASE = "http://api.map.baidu.com/telematics/v3/weather?location=";
-	private static final String KEYS = "&output=json&ak=640f3985a6437dad8135dae98d775a09";
+	private static final String KEYS = "&output=json&ak=A72e372de05e63c8740b2622d0ed8ab1";
 	private static final String CITY_SEPARATOR_ZH = "，";
 	private static final String CITY_SEPARATOR = ",";
 
