@@ -28,7 +28,8 @@ public class Util {
 		dayIcons.put("baoyu.png", R.drawable.dayu);
 		dayIcons.put("zhongyu.png", R.drawable.zhongyu);
 		dayIcons.put("zhenyu.png", R.drawable.zhenyu);
-
+		dayIcons.put("leizhenyu.png", R.drawable.zhenyu);
+		
 		dayIcons.put("xiaoxue.png", R.drawable.xiaoxue);
 		dayIcons.put("daxue.png", R.drawable.daxue);
 		dayIcons.put("zhongxue.png", R.drawable.zhongxue);
