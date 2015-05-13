@@ -31,8 +31,8 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 
 	private static final String BASE = "http://api.map.baidu.com/telematics/v3/weather?location=";
 	private static final String KEYS = "&output=json&ak=A72e372de05e63c8740b2622d0ed8ab1";
-	private static final String CITY_SEPARATOR_ZH = "，";
-	private static final String CITY_SEPARATOR = ",";
+	public static final String CITY_SEPARATOR_ZH = "，";
+	public static final String CITY_SEPARATOR = ",";
 
 	private static final int TIME_OUT = 30000;
 
@@ -50,15 +50,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 	}
 
 	private void setCities() {
-		preferences = wtContext.getSharedPreferences(Config.APP_CONFIG_KEY, Context.MODE_PRIVATE);
-		String ct = preferences.getString(Config.CONFIG_CITY, "");
-		if (ct != null && ct.trim().length() > 0) {
-			String sp = ct.indexOf(CITY_SEPARATOR_ZH) > 0 ? CITY_SEPARATOR_ZH : CITY_SEPARATOR;
-			cities = ct.split(sp);
-			for (int i = 0; i < cities.length; i++) {
-				cities[i] = Util.encodeURLWithUTF8(cities[i].trim());
-			}
-		}
+		cities = ConfUtil.getConfiguredCities(wtContext);
 	}
 
 	public String[] getCities() {
@@ -82,14 +74,13 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 
 	private boolean loadWeatherInfo(String cityName) {
 
-		HttpGet request = new HttpGet(BASE + cityName + KEYS);
-
 		String info = "Nothing got";
-		HttpResponse httpResponse;
 		boolean loaded = false;
 		CityWeather cw = null;
 		try {
-			httpResponse = client.execute(request);
+
+			HttpGet request = new HttpGet(BASE + cityName + KEYS);
+			HttpResponse httpResponse = client.execute(request);
 			String retSrc = EntityUtils.toString(httpResponse.getEntity());
 			// SkLog.d("==============Got weather info :" + retSrc);
 			JSONObject response = new JSONObject(retSrc);
@@ -119,7 +110,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 
 		if (loaded) {
 			// SkLog.d("==============loadedWeatherInfo:" + info);
-			WeatherCache.getInstance().addCache(cityName, cw);
+			WeatherCache.getInstance(wtContext).addCache(cityName, cw);
 		} else {
 			SkLog.w("==============Get weather info error:" + info);
 			errorMsg = info;
@@ -131,10 +122,10 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 	protected String doInBackground(String... arg0) {
 		// SkLog.d("==============WTDataLoader.doInBackground");
 		boolean loaded = false;
-		WeatherCache.getInstance().setLoading(true);
-		if (WeatherCache.getInstance().isCityChanged()) {
+		WeatherCache.getInstance(wtContext).setLoading(true);
+		if (WeatherCache.getInstance(wtContext).isCityChanged()) {
 			setCities();
-			WeatherCache.getInstance().setCityChanged(false);
+			WeatherCache.getInstance(wtContext).setCityChanged(false);
 		}
 		errorMsg = "";
 		for (String c : cities) {
@@ -144,7 +135,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 		}
 		if (loaded) {
 			wtWidget.updateWeatherInfo(wtContext);
-			WeatherCache.getInstance().setLastLoaded();
+			WeatherCache.getInstance(wtContext).setLastLoaded();
 		} else {
 			if (errorMsg.length() > 1) {
 				SkLog.d("============== doInBackground: showing error message");
@@ -157,8 +148,8 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 				});
 			}
 		}
-		WeatherCache.getInstance().setLastLoadingSuccessful(loaded);
-		WeatherCache.getInstance().setLoading(false);
+		WeatherCache.getInstance(wtContext).setLastLoadingSuccessful(loaded);
+		WeatherCache.getInstance(wtContext).setLoading(false);
 		return null;
 	}
 

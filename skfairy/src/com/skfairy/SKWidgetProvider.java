@@ -271,6 +271,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
 		remoteViews.setOnClickPendingIntent(R.id.locker, mylockPi);
 	}
 
+
 	private void setMobileDataEnabled(Context context, boolean enabled) throws Exception {
 		SkLog.d("==============setMobileDataEnabled:" + enabled);
 		ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

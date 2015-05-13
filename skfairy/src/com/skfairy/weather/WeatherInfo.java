@@ -5,7 +5,9 @@ import org.json.JSONObject;
 import com.skfairy.SkLog;
 import com.skfairy.Util;
 
-public class WeatherInfo {
+import java.io.Serializable;
+
+public class WeatherInfo implements Serializable {
 
 	public static final String DATE_NAME = "date";
 	public static final String RESULTS = "results";
@@ -76,6 +78,13 @@ public class WeatherInfo {
 			}
 			return r;
 		}
+
+		// 有时会有:  "date": "周日 05月10日",
+		i = dateStr.indexOf(BLANK);
+		if (i > 0) {
+			return dateStr.substring(0, i);
+		}
+
 		return dateStr;
 	}
 

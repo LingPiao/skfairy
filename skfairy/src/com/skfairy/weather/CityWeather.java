@@ -1,11 +1,12 @@
 package com.skfairy.weather;
 
+import com.skfairy.Util;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.skfairy.Util;
-
-public class CityWeather {
+public class CityWeather implements Serializable {
 	private String city;
 	private String date;
 	private List<WeatherInfo> weatherInfos = new ArrayList<WeatherInfo>();
