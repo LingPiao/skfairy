@@ -7,6 +7,7 @@ import android.text.format.Time;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -178,6 +179,37 @@ public class Util {
         } else {
             return context.getFilesDir();
         }
+    }
+
+    public static boolean executeCommandViaSu(String command) {
+        boolean success = false;
+        String su = "/system/xbin/su";
+        try {
+            SkLog.d("Execute the cmd[" + su + " -c " + command + "]...");
+            // Execute command as "su".
+            Runtime.getRuntime().exec(new String[]{su, "-c", command});
+        } catch (IOException e) {
+            success = false;
+            SkLog.w("Oops! Cannot execute the cmd for some reason:" + e.getMessage());
+        } finally {
+            success = true;
+            SkLog.d("Execute the cmd successfully.");
+        }
+        return success;
+    }
+
+    public static boolean executeCommand(String command) {
+        boolean success = false;
+        try {
+            SkLog.d("Execute the cmd[" + command + "]...");
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            SkLog.w("Oops! Cannot execute the cmd for some reason:" + e.getMessage());
+        } finally {
+            success = true;
+            SkLog.d("Execute the cmd successfully.");
+        }
+        return success;
     }
 
 }

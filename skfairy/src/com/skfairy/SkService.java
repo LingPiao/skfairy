@@ -67,6 +67,7 @@ public class SkService extends Service {
 				// mShakeDetector.unRegisterListener();
 				if (shake4call && isReadForAnswer) {
 					boolean answered = CallHelper.answerCall(SkService.this);
+					SkLog.d("Get onShake event and answered the incoming call:" + answered);
 					if (answered) {
 						// Short vibrating and only once
 						vibrator.vibrate(new long[] { 100, 300}, -1);
