@@ -20,6 +20,7 @@
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
     <string name="config.AutoStart">AutoStart</string>
     <string name="widget.locker">Lock the device</string>
+    <string name="reboot.click">Click again to reboot your phone</string>
     <string name="widget.weather.loading">Loading&#8230;</string>
     <string name="widget.weather.msg.latest">Updated</string>
     <string name="widget.weather.note">Click to get the weather info after Internet connected</string>

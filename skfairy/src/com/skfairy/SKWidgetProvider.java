@@ -12,7 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.os.Handler;
 import android.widget.RemoteViews;
 
 public class SKWidgetProvider extends AppWidgetProvider {
@@ -22,6 +22,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
     private RemoteViews remoteViews = null;
     private static boolean isGPRSEnabled = false;
     private static boolean wifiEnabled = false;
+    private static int powerClickCount = 0;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -127,6 +128,21 @@ public class SKWidgetProvider extends AppWidgetProvider {
                 } else {
                     am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
                 }
+            } else if (operator == Switch.REBOOT.getValue()) {
+                SkLog.d("==============Reboot the device,cnt:" + powerClickCount);
+                if (powerClickCount == 0) {
+                    Util.msgBox(context, R.string.reboot_click);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            powerClickCount = 0;
+                        }
+                    }, 2000);
+                } else if (powerClickCount == 1) {
+                    Util.executeCommandViaSu("svc power reboot");
+                    SkLog.d("==============Reboot the device");
+                }
+                powerClickCount++;
             }
 
         }
@@ -189,15 +205,15 @@ public class SKWidgetProvider extends AppWidgetProvider {
 
     private void updateStatus(Context context) {
         AppWidgetManager appWidgetManger = AppWidgetManager.getInstance(context);
-        wifiClick(context);
-        airplanClick(context);
-        phoneModelClick(context);
-        moblieNetClick(context);
-        lockClick(context);
+        wifiClickListener(context);
+        rebootClickListener(context);
+        phoneModelClickListener(context);
+        moblieNetClickListener(context);
+        lockClickListener(context);
         appWidgetManger.updateAppWidget(new ComponentName(context, SKWidgetProvider.class), remoteViews);
     }
 
-    private void wifiClick(Context context) {
+    private void wifiClickListener(Context context) {
         Intent wifiIntent = new Intent(SK_WIDGET_ACTION_CLICK);
         wifiIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.WIFI.getValue());
         PendingIntent wifiPi = PendingIntent.getBroadcast(context, Switch.WIFI.getValue(), wifiIntent, 0);
@@ -209,7 +225,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.wifi, wifiPi);
     }
 
-    private void phoneModelClick(Context context) {
+    private void phoneModelClickListener(Context context) {
         Intent mInt = new Intent(SK_WIDGET_ACTION_CLICK);
         mInt.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.MODEL.getValue());
         PendingIntent mPi = PendingIntent.getBroadcast(context, Switch.MODEL.getValue(), mInt, 0);
@@ -227,7 +243,7 @@ public class SKWidgetProvider extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.model, mPi);
     }
 
-    private void moblieNetClick(Context context) {
+    private void moblieNetClickListener(Context context) {
         Intent gprsIntent = new Intent(SK_WIDGET_ACTION_CLICK);
         gprsIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.GPRS.getValue());
         PendingIntent gprsPi = PendingIntent.getBroadcast(context, Switch.GPRS.getValue(), gprsIntent, 0);
@@ -243,24 +259,32 @@ public class SKWidgetProvider extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.gprs, gprsPi);
     }
 
-    private void airplanClick(Context context) {
-        Intent airplaneModeIntent = new Intent(SK_WIDGET_ACTION_CLICK);
-        airplaneModeIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.AIRPLANE.getValue());
-        PendingIntent airplanePi = PendingIntent.getBroadcast(context, Switch.AIRPLANE.getValue(), airplaneModeIntent, 0);
+//    private void airplanClick(Context context) {
+//        Intent airplaneModeIntent = new Intent(SK_WIDGET_ACTION_CLICK);
+//        airplaneModeIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.AIRPLANE.getValue());
+//        PendingIntent airplanePi = PendingIntent.getBroadcast(context, Switch.AIRPLANE.getValue(), airplaneModeIntent, 0);
+//
+//        boolean airplaneEnabled = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+//        if (airplaneEnabled) {
+//            SkLog.d("==============AirplaneMode enabled");
+//            remoteViews.setImageViewResource(R.id.airplaneMode, R.drawable.ic_lock_airplane_mode_enabled);
+//        } else {
+//            SkLog.d("==============AirplaneMode disabled");
+//            remoteViews.setImageViewResource(R.id.airplaneMode, R.drawable.ic_lock_airplane_mode);
+//        }
+//        remoteViews.setOnClickPendingIntent(R.id.airplaneMode, airplanePi);
+//    }
 
-        boolean airplaneEnabled = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
-        if (airplaneEnabled) {
-            SkLog.d("==============AirplaneMode enabled");
-            remoteViews.setImageViewResource(R.id.airplaneMode, R.drawable.ic_lock_airplane_mode_enabled);
-        } else {
-            SkLog.d("==============AirplaneMode disabled");
-            remoteViews.setImageViewResource(R.id.airplaneMode, R.drawable.ic_lock_airplane_mode);
-        }
-        remoteViews.setOnClickPendingIntent(R.id.airplaneMode, airplanePi);
+
+    private void rebootClickListener(Context context) {
+        Intent rebootIntent = new Intent(SK_WIDGET_ACTION_CLICK);
+        rebootIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.REBOOT.getValue());
+        PendingIntent rebootPi = PendingIntent.getBroadcast(context, Switch.REBOOT.getValue(), rebootIntent, 0);
+
+        remoteViews.setOnClickPendingIntent(R.id.rebootMode, rebootPi);
     }
 
-    private void lockClick(Context context) {
-
+    private void lockClickListener(Context context) {
         Intent mylockIntent = new Intent(SK_WIDGET_ACTION_CLICK);
         mylockIntent.putExtra(SK_WIDGET_ACTION_OPERATOR_KEY, Switch.LOCK.getValue());
         PendingIntent mylockPi = PendingIntent.getBroadcast(context, Switch.LOCK.getValue(), mylockIntent, 0);

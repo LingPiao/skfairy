@@ -20,6 +20,7 @@
     <string name="about.cp">Copyright©Kong,LingPiao - 2013\n\t\tAll Rights Reserved</string>
     <string name="config.AutoStart">开机启动</string>
     <string name="widget.locker">锁屏</string>
+    <string name="reboot.click">再按一次重启手机</string>
     <string name="widget.weather.loading">加载中&#8230;</string>
     <string name="widget.weather.msg.latest">已是最新信息</string>
     <string name="widget.weather.note">打开网络后点击获取天气信息</string>
@@ -27,4 +28,5 @@
     <string name="widget.weather.config.title">天气插件</string>
     <string name="widget.weather.config.lbl.city">城市:</string>
     <string name="widget.weather.config.lbl.city.note">不同城市请用逗号(,)分开</string>
-</resources>
+
+</resources>
