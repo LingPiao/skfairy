@@ -1,7 +1,5 @@
 package com.skfairy.weather;
 
-import java.util.Map;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -17,6 +15,8 @@ import com.skfairy.R;
 import com.skfairy.SkLog;
 import com.skfairy.Switch;
 import com.skfairy.Util;
+import java.util.Date;
+import java.util.Map;
 
 public class WTWidgetProvider extends AppWidgetProvider {
 
@@ -24,6 +24,8 @@ public class WTWidgetProvider extends AppWidgetProvider {
     private static final String WT_WIDGET_ACTION_OPERATOR_KEY = "WT_WIDGET_ACTION_OPERATOR_KEY";
     private RemoteViews remoteViews = null;
     private WTDataLoader dataLoader = null;
+    private long updateTime = System.currentTimeMillis();
+    private static final long WEATHER_UPDATE_INTERVAL = 3600000; //An hour
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -82,6 +84,11 @@ public class WTWidgetProvider extends AppWidgetProvider {
                 switchCity(context);
             } else {
                 updateStatus(context);
+            }
+        } else if (act.equals(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)) {
+            if ((System.currentTimeMillis() - updateTime) >= WEATHER_UPDATE_INTERVAL && isInternetConnected(context)) {
+                dataLoader.execute();
+                updateTime = System.currentTimeMillis();
             }
         }
     }
