@@ -1,5 +1,14 @@
 package com.skfairy.weather;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.skfairy.SkLog;
+import com.skfairy.Util;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -12,16 +21,6 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
-
-import com.skfairy.Config;
-import com.skfairy.SkLog;
-import com.skfairy.Util;
 
 public class WTDataLoader extends AsyncTask<String, String, String> {
 

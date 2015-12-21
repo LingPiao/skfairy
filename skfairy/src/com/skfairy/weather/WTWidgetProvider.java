@@ -15,7 +15,7 @@ import com.skfairy.R;
 import com.skfairy.SkLog;
 import com.skfairy.Switch;
 import com.skfairy.Util;
-import java.util.Date;
+
 import java.util.Map;
 
 public class WTWidgetProvider extends AppWidgetProvider {
@@ -67,11 +67,11 @@ public class WTWidgetProvider extends AppWidgetProvider {
         if (dataLoader == null) {
             dataLoader = new WTDataLoader(this, context);
         }
+        if (remoteViews == null) {
+            remoteViews = new RemoteViews(context.getPackageName(), R.layout.wt_widget);
+        }
         int operator = 0;
         if (act.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE) || act.equals(WT_WIDGET_ACTION_CLICK)) {
-            if (remoteViews == null) {
-                remoteViews = new RemoteViews(context.getPackageName(), R.layout.wt_widget);
-            }
             Bundle bundle = intent.getExtras();
 
             if (bundle != null) {
@@ -85,12 +85,46 @@ public class WTWidgetProvider extends AppWidgetProvider {
             } else {
                 updateStatus(context);
             }
-        } else if (act.equals(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)) {
-            if ((System.currentTimeMillis() - updateTime) >= WEATHER_UPDATE_INTERVAL && isInternetConnected(context)) {
-                dataLoader.execute();
-                updateTime = System.currentTimeMillis();
+        } else if (act.equals(android.net.ConnectivityManager.CONNECTIVITY_ACTION)) {
+            SkLog.d("==============WIFI_STATE_CHANGED");
+            long current = System.currentTimeMillis();
+            if (isUpdateRequired(updateTime, current)) {
+                if (isNetEnable(context) && isInternetConnected(context)) {
+                    SkLog.d("==============WIFI_STATE_CHANGED. Loading weather info");
+                    dataLoader.execute();
+                    updateTime = current;
+                }
             }
         }
+    }
+
+    private boolean isUpdateRequired(long updateTime, long current) {
+        if ((current - updateTime) >= WEATHER_UPDATE_INTERVAL) {
+            return true;
+        }
+        //Coming a new day
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        c.setTime(new java.util.Date(updateTime));
+        int d1 = c.get(java.util.Calendar.DAY_OF_MONTH);
+        c.setTime(new java.util.Date(current));
+        int d2 = c.get(java.util.Calendar.DAY_OF_MONTH);
+        return (d2 - d1) >= 1;
+    }
+
+    private boolean isNetEnable(Context context) {
+        android.net.wifi.WifiManager wifiManager = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        boolean wifiEnabled = wifiManager.isWifiEnabled();
+        if (wifiEnabled) {
+            return true;
+        }
+        ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mNet = conman.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mNet != null) {
+            if (mNet.isAvailable() && mNet.isConnected()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void weatherWidgetClick(Context context) {
