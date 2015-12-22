@@ -86,13 +86,14 @@ public class WTWidgetProvider extends AppWidgetProvider {
                 updateStatus(context);
             }
         } else if (act.equals(android.net.ConnectivityManager.CONNECTIVITY_ACTION)) {
-            SkLog.d("==============WIFI_STATE_CHANGED");
+            SkLog.d("==============WTWidgetProvider.WIFI_STATE_CHANGED");
             long current = System.currentTimeMillis();
             if (isUpdateRequired(updateTime, current)) {
                 if (isNetEnable(context) && isInternetConnected(context)) {
                     SkLog.d("==============WIFI_STATE_CHANGED. Loading weather info");
                     dataLoader.execute();
                     updateTime = current;
+                    updateStatus(context);
                 }
             }
         }
