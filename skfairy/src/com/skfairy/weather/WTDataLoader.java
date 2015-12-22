@@ -104,6 +104,7 @@ public class WTDataLoader extends AsyncTask<String, String, String> {
 				break;
 			}
 		} catch (Exception e) {
+			SkLog.e("Get weather info error:", e);
 			info = "Get weather info error:" + e.getLocalizedMessage();
 		}
 
