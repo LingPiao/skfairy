@@ -23,7 +23,7 @@ public class WTWidgetProvider extends AppWidgetProvider {
     private static final String WT_WIDGET_ACTION_CLICK = "android.sk.widget.wt.action.click";
     private static final String WT_WIDGET_ACTION_OPERATOR_KEY = "WT_WIDGET_ACTION_OPERATOR_KEY";
     private RemoteViews remoteViews = null;
-    private WTDataLoader dataLoader = null;
+    private WTCNDataLoader dataLoader = null;
     private long updateTime = System.currentTimeMillis();
     private static final long WEATHER_UPDATE_INTERVAL = 3600000; //An hour
 
@@ -65,7 +65,7 @@ public class WTWidgetProvider extends AppWidgetProvider {
         String act = intent.getAction();
         SkLog.d("==============WTWidgetProvider.onReceive,action=" + act);
         if (dataLoader == null) {
-            dataLoader = new WTDataLoader(this, context);
+            dataLoader = new WTCNDataLoader(this, context);
         }
         if (remoteViews == null) {
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.wt_widget);
@@ -186,25 +186,25 @@ public class WTWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.date, cw.getDate() + Util.SLASH + today.getDate());
             remoteViews.setTextViewText(R.id.weather, today.getWeather() + Util.BLANK_STRING + today.getWind());
             remoteViews.setTextViewText(R.id.temperature, today.getTemperature());
-            remoteViews.setImageViewResource(R.id.weatherIcon, Util.getTodayIconId(today.getDayIcon()));
+            remoteViews.setImageViewResource(R.id.weatherIcon, Util.getTodayIconId(today.getWeather()));
 
             // Next1
             WeatherInfo d1 = cw.getWeatherInfos().get(1);
             remoteViews.setTextViewText(R.id.day1, d1.getDate());
             remoteViews.setTextViewText(R.id.day1Temperature, d1.getTemperature());
-            remoteViews.setImageViewResource(R.id.day1Icon, Util.getDayIconId(d1.getDayIcon()));
+            remoteViews.setImageViewResource(R.id.day1Icon, Util.getDayIconId(d1.getWeather()));
 
             // Next2
             WeatherInfo d2 = cw.getWeatherInfos().get(2);
             remoteViews.setTextViewText(R.id.day2, d2.getDate());
             remoteViews.setTextViewText(R.id.day2Temperature, d2.getTemperature());
-            remoteViews.setImageViewResource(R.id.day2Icon, Util.getDayIconId(d2.getDayIcon()));
+            remoteViews.setImageViewResource(R.id.day2Icon, Util.getDayIconId(d2.getWeather()));
 
             // Next3
             WeatherInfo d3 = cw.getWeatherInfos().get(3);
             remoteViews.setTextViewText(R.id.day3, d3.getDate());
             remoteViews.setTextViewText(R.id.day3Temperature, d3.getTemperature());
-            remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getDayIcon()));
+            remoteViews.setImageViewResource(R.id.day3Icon, Util.getDayIconId(d3.getWeather()));
         }
         setOnClick(context);
         updateWidget(context);

@@ -26,33 +26,32 @@ public class Util {
 
     static {
 
-        dayIcons.put("xiaoyu.png", R.drawable.xiaoyu);
-        dayIcons.put("dayu.png", R.drawable.dayu);
-        dayIcons.put("baoyu.png", R.drawable.dayu);
-        dayIcons.put("zhongyu.png", R.drawable.zhongyu);
-        dayIcons.put("zhenyu.png", R.drawable.zhenyu);
-        dayIcons.put("leizhenyu.png", R.drawable.zhenyu);
+        dayIcons.put("小雨", R.drawable.xiaoyu);
+        dayIcons.put("大雨", R.drawable.dayu);
+        dayIcons.put("暴雨", R.drawable.dayu);
+        dayIcons.put("中雨", R.drawable.zhongyu);
+        dayIcons.put("阵雨", R.drawable.zhenyu);
+        dayIcons.put("雷阵雨", R.drawable.zhenyu);
 
-        dayIcons.put("xiaoxue.png", R.drawable.xiaoxue);
-        dayIcons.put("daxue.png", R.drawable.daxue);
-        dayIcons.put("zhongxue.png", R.drawable.zhongxue);
-        dayIcons.put("yujiaxue.png", R.drawable.yujiaxue);
+        dayIcons.put("小雪", R.drawable.xiaoxue);
+        dayIcons.put("大雪", R.drawable.daxue);
+        dayIcons.put("中雪", R.drawable.zhongxue);
+        dayIcons.put("雨夹雪", R.drawable.yujiaxue);
 
-        dayIcons.put("duoyun.png", R.drawable.duoyun);
-        dayIcons.put("leidian.png", R.drawable.leidian);
-        // dayIcons.put("na.png", R.drawable.na);
-        dayIcons.put("qing.png", R.drawable.qing);
-        dayIcons.put("yin.png", R.drawable.yin);
+        dayIcons.put("多云", R.drawable.duoyun);
+        dayIcons.put("雷电", R.drawable.leidian);
+        dayIcons.put("晴", R.drawable.qing);
+        dayIcons.put("阴", R.drawable.yin);
 
         // ======================================================
         // all the night's pictures are prefixed with nt_
-        nightIcons.put("dayu.png", R.drawable.nt_dayu);
-        nightIcons.put("baoyu.png", R.drawable.nt_dayu);
-        nightIcons.put("duoyun.png", R.drawable.nt_duoyun);
-        nightIcons.put("leidian.png", R.drawable.nt_leidian);
-        nightIcons.put("qing.png", R.drawable.nt_qing);
-        nightIcons.put("xiaoyu.png", R.drawable.nt_xiaoyu);
-        nightIcons.put("yin.png", R.drawable.nt_yin);
+        nightIcons.put("大雨", R.drawable.nt_dayu);
+        nightIcons.put("暴雨", R.drawable.nt_dayu);
+        nightIcons.put("多云", R.drawable.nt_duoyun);
+        nightIcons.put("雷电", R.drawable.nt_leidian);
+        nightIcons.put("晴", R.drawable.nt_qing);
+        nightIcons.put("小雨", R.drawable.nt_xiaoyu);
+        nightIcons.put("阴", R.drawable.nt_yin);
 
     }
 
@@ -123,30 +122,24 @@ public class Util {
         }
     }
 
-    public static String extactPictureFromUrl(String url) {
-        if (url == null || url.trim() == EMPTY_STRING) {
-            return null;
-        }
-        return url.substring(url.lastIndexOf(SLASH) + 1);
-    }
 
-    public static int getDayIconId(String weatherPic) {
-        Integer p = dayIcons.get(weatherPic);
+    public static int getDayIconId(String weather) {
+        Integer p = dayIcons.get(weather);
         if (p == null) {
             return R.drawable.na;
         }
         return p.intValue();
     }
 
-    public static int getTodayIconId(String weatherPic) {
+    public static int getTodayIconId(String weather) {
         Time now = new Time();
         now.setToNow();
         Integer p = null;
         if (now.hour >= 19 || now.hour < 4) {
-            p = nightIcons.get(weatherPic);
+            p = nightIcons.get(weather);
         }
         if (p == null) {
-            p = dayIcons.get(weatherPic);
+            p = dayIcons.get(weather);
         }
         if (p == null) {
             p = R.drawable.na;
